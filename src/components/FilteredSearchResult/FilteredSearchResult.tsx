@@ -1,0 +1,57 @@
+import { useSelector } from "react-redux";
+import { AstronomicalObject } from "../../models/astronomical-object";
+import { OrbitalPoint } from "../../models/orbital-point";
+import { Star } from "../../models/star";
+import { StarSystem } from "../../models/star-system";
+import { formatOrbitalPointName } from "../../utils/orbital-point-display";
+import { formatSpectralType } from "../../utils/star-display";
+
+export interface FilteredSearchResultProps {
+  orbitalPoint: OrbitalPoint;
+  onClick?: () => void;
+}
+
+export function FilteredSearchResult({
+  orbitalPoint,
+  onClick,
+}: FilteredSearchResultProps) {
+  const system = useSelector(
+    (state: any) => state.starSystem.current
+  ) as StarSystem;
+
+  return (
+    <div className="search-result">
+      <h4 onClick={onClick}>
+        -{"-".repeat(orbitalPoint.depth)}{" "}
+        {formatOrbitalPointName(orbitalPoint, system)}
+      </h4>
+      <div className="padded-left">
+        {orbitalPoint.type === AstronomicalObject.Star &&
+          printStarType(orbitalPoint as Star)}
+        {orbitalPoint.satellite_ids.length > 0 &&
+          printSatellites(orbitalPoint.satellite_ids, system)}
+      </div>
+    </div>
+  );
+}
+
+const printStarType = (star: Star): JSX.Element => (
+  <p>{formatSpectralType(star.spectralType, star.luminosityClass)}</p>
+);
+
+const printSatellites = (
+  satellite_ids: number[],
+  system: StarSystem
+): JSX.Element => (
+  <p>
+    Orbited by:{" "}
+    {satellite_ids
+      .map((id) =>
+        formatOrbitalPointName(
+          system.allObjects.find((o) => o.id === id),
+          system
+        )
+      )
+      .join(", ")}
+  </p>
+);

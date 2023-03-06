@@ -1,0 +1,249 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ubuntu+Mono&display=swap");
+
+html {
+  ---darker-color: #121212;
+  ---dark-color: #2b2a38;
+  ---dark-grey: #282828;
+  ---less-dark-grey: #363636;
+  ---grey-color: #404040;
+  ---light-grey-color: #69696e;
+  ---light-color: #b3b3b3;
+  ---lighter-color: #dcdcdc;
+
+  margin: 0;
+  height: 100%;
+  font-family: "Ubuntu Mono", monospace, "Courier New", Courier;
+  line-height: 1.2em;
+}
+
+body,
+#root,
+#body-container {
+  background: radial-gradient(
+    circle,
+    var(---dark-color) 0%,
+    var(---darker-color) 100%
+  );
+  color: var(---light-color);
+  margin: 0;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  max-width: inherit;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+h3,
+h4 {
+  padding: 0 0 6px 0;
+  margin: 0;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+#content-box {
+  flex: 0 1200px;
+  background: var(---dark-grey);
+  border: 4px dashed var(---light-grey-color);
+  margin: 8px;
+  max-width: 1200px;
+}
+
+#logo {
+  padding: 8px 8px 8px 4px;
+  color: var(---light-grey-color);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#search-result-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.scrollable {
+  flex: 1 0 0;
+  overflow-y: auto;
+  min-height: 0px;
+}
+
+.dashed-bottom {
+  border-bottom: 4px dashed var(---light-grey-color);
+}
+
+.dashed-right {
+  border-right: 4px dashed var(---light-grey-color);
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.centered-element {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.fit-container {
+  position: relative;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.half-width {
+  width: 50%;
+  height: 100%;
+}
+
+.margin-dash-top {
+  margin-top: 4px;
+}
+
+.padded-dash {
+  padding: 4px;
+}
+
+.padded-dash-vertical {
+  padding: 4px 0;
+}
+
+.padded-dash-top {
+  padding-top: 4px;
+}
+
+.padded-dash-bottom {
+  padding-bottom: 4px;
+}
+
+.padded-dash-left {
+  padding-left: 4px;
+}
+
+.padded-dash-right {
+  padding-right: 4px;
+}
+
+.padded {
+  padding: 8px;
+}
+
+.padded-vertical {
+  padding: 8px 0;
+}
+
+.padded-horizontal {
+  padding: 0 8px;
+}
+
+.padded-top {
+  padding-top: 8px;
+}
+
+.padded-bottom {
+  padding-bottom: 8px;
+}
+
+.padded-left {
+  padding-left: 8px;
+}
+
+.padded-right {
+  padding-right: 8px;
+}
+
+.pixi {
+  border: 1px solid var(---light-grey-color);
+  background-color: var(---grey-color);
+}
+
+.align-center {
+  text-align: center;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.info-table {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  gap: 10px;
+}
+
+.info-table-couple {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  min-width: 0;
+  height: 28px;
+
+  border: 2px dotted var(---light-grey-color);
+}
+
+.info-table-cell-title {
+  text-align: center;
+  min-width: 0;
+  width: 120px;
+}
+
+.info-table-cell-content {
+  text-align: center;
+  min-width: 0;
+  width: 150px;
+}
+
+.search-result {
+  padding: 4px 4px 4px 0;
+  min-height: 0;
+}
+
+.search-result > h4 {
+  cursor: pointer;
+}
+
+.search-result:not(:last-child):after {
+  content: "";
+  display: inline-block;
+  background-color: var(---grey-color);
+  height: 2px;
+  width: 100%;
+}

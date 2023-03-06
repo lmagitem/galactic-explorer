@@ -1,0 +1,94 @@
+.square {
+  position: relative;
+  width: 25%;
+  min-width: 140px;
+  max-width: 224px;
+  border: 1px solid var(---light-grey-color);
+  background-color: var(---grey-color);
+}
+
+.square::after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}
+
+.square-content {
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+.center-stars {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.preview-object {
+  text-align: center;
+  font-size: 5em;
+  z-index: 120;
+}
+
+.star-small-halo {
+  text-align: center;
+  font-size: 5em;
+  z-index: 115;
+  filter: blur(0.1em);
+}
+
+.star-heavy-halo {
+  text-align: center;
+  font-size: 5em;
+  z-index: 115;
+  filter: blur(0.5em);
+}
+
+.stars {
+  background: black
+    url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/stars.png) repeat;
+  position: absolute;
+  background-size: 250%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  z-index: 110;
+}
+
+.twinkling {
+  width: 10000px;
+  height: 100%;
+  background: transparent
+    url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/1231630/twinkling.png")
+    repeat;
+  background-size: 1000px 1000px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  animation: move-background 20s linear infinite;
+}
+
+@keyframes move-background {
+  from {
+    -webkit-transform: translate3d(0px, 0px, 0px);
+  }
+  to {
+    -webkit-transform: translate3d(1000px, 0px, 0px);
+  }
+}
