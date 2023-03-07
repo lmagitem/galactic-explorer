@@ -116,3 +116,5 @@ export const getStarColor = (temp: number): string => {
 
     return getHexFromRGB(r, g, b);
 };
+
+export const getStarColorAsNumber = (temp: number): number => parseInt(getStarColor(temp).substring(1), 16);

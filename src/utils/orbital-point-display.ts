@@ -11,9 +11,9 @@ export const formatOrbitalPointName = (orbitalPoint: OrbitalPoint | undefined, s
         if (orbitalPoint
             .primaryBody === null)
             return "Center of the System";
-        else if (orbitalPoint.satellite_ids.length > 0)
+        else if (orbitalPoint.satelliteIds.length > 0)
             return recursive ?
-                `Barycentre ${orbitalPoint.id} (${orbitalPoint.satellite_ids.map(id => formatOrbitalPointName(system.allObjects.find(o => o.id === id), system, false)).join(", ")})`
+                `Barycentre ${orbitalPoint.id} (${orbitalPoint.satelliteIds.map(id => formatOrbitalPointName(system.allObjects.find(o => o.id === id), system, false)).join(", ")})`
                 : `Barycentre ${orbitalPoint.id}`;
         else
             return "Empty Space";

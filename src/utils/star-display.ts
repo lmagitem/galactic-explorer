@@ -1,5 +1,6 @@
 import { StarLuminosityClass, StarLuminosityClassEnum } from "../models/star-luminosity-class";
 import { StarSpectralType, StarSpectralTypeEnum } from "../models/star-spectral-type";
+import { calculateLogWithMinAndMax } from "./math";
 
 export const formatSpectralType =
     (spectralType: StarSpectralType | undefined, luminosityClass: StarLuminosityClass | undefined): string => {
@@ -61,11 +62,11 @@ export const formatLuminosityClass = (luminosityClass: StarLuminosityClass | und
             result = "Hypergiant"
             break;
         case StarLuminosityClassEnum.Ia:
-            case StarLuminosityClassEnum.Ib:
+        case StarLuminosityClassEnum.Ib:
             result = "Supergiant"
             break;
         case StarLuminosityClassEnum.II:
-            case StarLuminosityClassEnum.III:
+        case StarLuminosityClassEnum.III:
             result = "Giant"
             break;
         case StarLuminosityClassEnum.IV:
@@ -92,10 +93,21 @@ export const calculateStarDisplaySize = (radius: number): number => {
     const maxVal = 500;
     const minLogVal = 1;
     const maxLogVal = 20;
-    const logMin = Math.log10(minVal);
-    const logMax = Math.log10(maxVal);
-    const logNum = Math.log10(radius);
-    const logScale = (logNum - logMin) / (logMax - logMin);
-    const result = logScale * (maxLogVal - minLogVal) + minLogVal;
-    return Math.max(minLogVal, Math.min(maxLogVal, result));
+    return calculateLogWithMinAndMax(radius, minVal, maxVal, minLogVal, maxLogVal);
+}
+
+export const calculateStarRadiusForGraph = (radius: number): number => {
+    const minVal = 1.16136118908e-5;
+    const maxVal = 10;
+    const minLogVal = 1;
+    const maxLogVal = 10;
+    return calculateLogWithMinAndMax(radius, minVal, maxVal, minLogVal, maxLogVal);
+}
+
+export const calculateOrbitalPointDistanceForGraph = (distance: number): number => {
+    const minVal = 1;
+    const maxVal = 100000;
+    const minLogVal = 100;
+    const maxLogVal = 15000;
+    return calculateLogWithMinAndMax(distance, minVal, maxVal, minLogVal, maxLogVal);
 }

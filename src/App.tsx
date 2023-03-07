@@ -1,6 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import AstronomicalObjectsDetails from "./components/AstronomicalObjectDetails";
-import AstronomicalObjectPreview from "./components/AstronomicalObjectPreview";
 import FilteredSearchResult from "./components/FilteredSearchResult";
 import GalaxyRecap from "./components/GalaxyRecap";
 import HeaderButton from "./components/HeaderButton";
@@ -10,6 +8,7 @@ import "tippy.js/dist/tippy.css";
 import { OrbitalPoint } from "./models/orbital-point";
 import { selectAstronomicalObject } from "./store/astronomical-object.slice";
 import PixiStage from "./components/PixiStage";
+import ObjectDetailsSection from "./components/ObjectDetailsSection";
 
 function App() {
   const dispatch = useDispatch();
@@ -35,14 +34,7 @@ function App() {
         </div>
         <main className="grow flex-vertical padded-dash-top">
           <div className="dashed-bottom">
-            <section className="grow flex-horizontal padded-dash-bottom">
-              {!!currentObject && (
-                <>
-                  <AstronomicalObjectPreview object={currentObject} />
-                  <AstronomicalObjectsDetails object={currentObject} />
-                </>
-              )}
-            </section>
+            <ObjectDetailsSection />
           </div>
           <div className="grow flex-horizontal padded-dash-top">
             <section className="half-width flex-vertical padded-dash-right dashed-right">

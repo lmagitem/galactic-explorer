@@ -43,7 +43,7 @@ const convertOrbitalPointWithoutReferencesFromDTO = (dto: OrbitalPointDTO): Orbi
         depth: 0,
         primaryBody: null,
         distanceFromPrimary: dto.distance_from_primary,
-        satellite_ids: dto.satellite_ids,
+        satelliteIds: dto.satellite_ids,
     } as unknown as OrbitalPoint;
 
     let dtoType = dto.object;

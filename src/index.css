@@ -186,11 +186,6 @@ p {
   padding-right: 8px;
 }
 
-.pixi {
-  border: 1px solid var(---light-grey-color);
-  background-color: var(---grey-color);
-}
-
 .align-center {
   text-align: center;
 }

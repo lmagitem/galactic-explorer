@@ -28,8 +28,8 @@ export function FilteredSearchResult({
       <div className="padded-left">
         {orbitalPoint.type === AstronomicalObject.Star &&
           printStarType(orbitalPoint as Star)}
-        {orbitalPoint.satellite_ids.length > 0 &&
-          printSatellites(orbitalPoint.satellite_ids, system)}
+        {orbitalPoint.satelliteIds.length > 0 &&
+          printSatellites(orbitalPoint.satelliteIds, system)}
       </div>
     </div>
   );
@@ -40,12 +40,12 @@ const printStarType = (star: Star): JSX.Element => (
 );
 
 const printSatellites = (
-  satellite_ids: number[],
+  satelliteIds: number[],
   system: StarSystem
 ): JSX.Element => (
   <p>
     Orbited by:{" "}
-    {satellite_ids
+    {satelliteIds
       .map((id) =>
         formatOrbitalPointName(
           system.allObjects.find((o) => o.id === id),

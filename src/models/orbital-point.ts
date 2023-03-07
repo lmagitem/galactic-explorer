@@ -6,7 +6,7 @@ export interface OrbitalPoint {
     depth: number;
     primaryBody: OrbitalPoint | null;
     distanceFromPrimary: number | null;
-    satellite_ids: number[];
+    satelliteIds: number[];
     type: AstronomicalObjectType;
 }
 
