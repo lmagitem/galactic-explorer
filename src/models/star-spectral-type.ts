@@ -20,29 +20,8 @@ export enum StarSpectralTypeEnum {
     XNS = "XNS",
     XBH = "XBH",
 }
+export type StarSpectralType = typeof StarSpectralTypeEnum | keyof typeof StarSpectralTypeEnum;
 
-export type StarSpectralType =
-    | StarSpectralTypeEnum.WR
-    | StarSpectralTypeEnum.O
-    | StarSpectralTypeEnum.B
-    | StarSpectralTypeEnum.A
-    | StarSpectralTypeEnum.F
-    | StarSpectralTypeEnum.G
-    | StarSpectralTypeEnum.K
-    | StarSpectralTypeEnum.M
-    | StarSpectralTypeEnum.L
-    | StarSpectralTypeEnum.T
-    | StarSpectralTypeEnum.Y
-    | StarSpectralTypeEnum.DA
-    | StarSpectralTypeEnum.DB
-    | StarSpectralTypeEnum.DC
-    | StarSpectralTypeEnum.DO
-    | StarSpectralTypeEnum.DZ
-    | StarSpectralTypeEnum.DQ
-    | StarSpectralTypeEnum.DX
-    | StarSpectralTypeEnum.XNS
-    | StarSpectralTypeEnum.XBH
-    | keyof typeof StarSpectralTypeEnum;
 export const isStarSpectralType = (obj: any): boolean =>
     (obj as StarSpectralType) === StarSpectralTypeEnum.WR
     || (obj as StarSpectralType) === StarSpectralTypeEnum.O

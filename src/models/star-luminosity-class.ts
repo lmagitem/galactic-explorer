@@ -11,19 +11,4 @@ export enum StarLuminosityClassEnum {
     Y = "Y",
     XNS = "XNS",
     XBH = "XBH",
-}
-
-export type StarLuminosityClass =
-| StarLuminosityClassEnum.O
-| StarLuminosityClassEnum.Ia
-| StarLuminosityClassEnum.Ib
-| StarLuminosityClassEnum.II
-| StarLuminosityClassEnum.III
-| StarLuminosityClassEnum.IV
-| StarLuminosityClassEnum.V
-| StarLuminosityClassEnum.VI
-| StarLuminosityClassEnum.VII
-| StarLuminosityClassEnum.Y
-| StarLuminosityClassEnum.XNS
-| StarLuminosityClassEnum.XBH
-| keyof typeof StarLuminosityClassEnum;
+}export type StarLuminosityClass = typeof StarLuminosityClassEnum | keyof typeof StarLuminosityClassEnum;

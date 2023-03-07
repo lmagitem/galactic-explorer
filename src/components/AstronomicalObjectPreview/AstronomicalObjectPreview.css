@@ -3,8 +3,8 @@
   width: 25%;
   min-width: 140px;
   max-width: 224px;
-  border: 1px solid var(---light-grey-color);
-  background-color: var(---grey-color);
+  border: 1px solid var(---light-grey);
+  background-color: var(---grey);
 }
 
 .square::after {

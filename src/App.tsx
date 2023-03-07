@@ -9,17 +9,30 @@ import { OrbitalPoint } from "./models/orbital-point";
 import { selectAstronomicalObject } from "./store/astronomical-object.slice";
 import PixiStage from "./components/PixiStage";
 import ObjectDetailsSection from "./components/ObjectDetailsSection";
+import {
+  FocusScale,
+  FocusScaleEnum,
+  NavState,
+  NavStateEnum,
+} from "./store/app.actions";
+import { setFocusScale, setNavState } from "./store/app.slice";
+import SettingsDefinitionSection from "./components/SettingsDefinitionSection";
+import { useEffect } from "react";
 
 function App() {
   const dispatch = useDispatch();
-  const system = useSelector(
-    (state: any) => state.starSystem.current
-  ) as StarSystem;
+  const system = useSelector((s: any) => s.starSystem.current) as StarSystem;
   const currentObject = useSelector(
-    (state: any) => state.astronomicalObject.current
+    (s: any) => s.astronomicalObject.current
   ) as OrbitalPoint;
+
+  useEffect(() => {
   if (currentObject === undefined)
     dispatch(selectAstronomicalObject(system.mainStar));
+  }, [system]);
+
+  const navState = useSelector((s: any) => s.app.navState) as NavState;
+  const focusScale = useSelector((s: any) => s.app.focusScale) as FocusScale;
 
   return (
     <div id="body-container" className="flex-center">
@@ -28,20 +41,41 @@ function App() {
           <nav className="padded-dash-bottom grow flex-horizontal">
             <Logo />
             <GalaxyRecap />
-            <HeaderButton title="Display" active={true} />
-            <HeaderButton title="Settings" active={false} />
+            <HeaderButton
+              title="Display"
+              active={navState === NavStateEnum.Display}
+              onClick={() => dispatch(setNavState(NavStateEnum.Display))}
+            />
+            <HeaderButton
+              title="Settings"
+              active={navState === NavStateEnum.Settings}
+              onClick={() => dispatch(setNavState(NavStateEnum.Settings))}
+            />
           </nav>
         </div>
         <main className="grow flex-vertical padded-dash-top">
           <div className="dashed-bottom">
-            <ObjectDetailsSection />
+            {navState === NavStateEnum.Display && <ObjectDetailsSection />}
+            {navState === NavStateEnum.Settings && <SettingsDefinitionSection />}
           </div>
           <div className="grow flex-horizontal padded-dash-top">
             <section className="half-width flex-vertical padded-dash-right dashed-right">
               <div className="dashed-bottom padded-dash-bottom flex-horizontal">
-                <HeaderButton title="Galaxy" active={false} />
-                <HeaderButton title="System" active={true} />
-                <HeaderButton title="Planet" active={false} />
+                <HeaderButton
+                  title="Galaxy"
+                  active={focusScale === FocusScaleEnum.Galaxy}
+                  onClick={() => dispatch(setFocusScale(FocusScaleEnum.Galaxy))}
+                />
+                <HeaderButton
+                  title="System"
+                  active={focusScale === FocusScaleEnum.System}
+                  onClick={() => dispatch(setFocusScale(FocusScaleEnum.System))}
+                />
+                <HeaderButton
+                  title="Planet"
+                  active={focusScale === FocusScaleEnum.Planet}
+                  onClick={() => dispatch(setFocusScale(FocusScaleEnum.Planet))}
+                />
               </div>
               <div className="grow flex-vertical padded-dash-top">
                 <PixiStage />

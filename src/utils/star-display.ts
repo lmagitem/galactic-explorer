@@ -12,11 +12,11 @@ export const formatSpectralType =
                 break;
             case StarSpectralTypeEnum.O:
             case StarSpectralTypeEnum.B:
-                result = `${luminosityClass === StarLuminosityClassEnum.V ? "Blue Star" : "Blue "}${formatLuminosityClass(luminosityClass)}`;
+                result = `${luminosityClass === StarLuminosityClassEnum.V ? "Blue Star" : "Blue " + formatLuminosityClass(luminosityClass)}`;
                 break;
             case StarSpectralTypeEnum.A:
             case StarSpectralTypeEnum.F:
-                result = `${luminosityClass === StarLuminosityClassEnum.V ? "White Star" : "White "}${formatLuminosityClass(luminosityClass)}`;
+                result = `${luminosityClass === StarLuminosityClassEnum.V ? "White Star" : "White " + formatLuminosityClass(luminosityClass)}`;
                 break;
             case StarSpectralTypeEnum.G:
                 result = `Yellow ${formatLuminosityClass(luminosityClass)}`;

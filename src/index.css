@@ -1,14 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ubuntu+Mono&display=swap");
 
 html {
-  ---darker-color: #121212;
-  ---dark-color: #2b2a38;
+  ---darkest: #121212;
+  ---dark: #2b2a38;
   ---dark-grey: #282828;
   ---less-dark-grey: #363636;
-  ---grey-color: #404040;
-  ---light-grey-color: #69696e;
-  ---light-color: #b3b3b3;
-  ---lighter-color: #dcdcdc;
+  ---grey: #404040;
+  ---light-grey: #69696e;
+  ---light: #b3b3b3;
+  ---lightest: #dcdcdc;
 
   margin: 0;
   height: 100%;
@@ -21,10 +21,10 @@ body,
 #body-container {
   background: radial-gradient(
     circle,
-    var(---dark-color) 0%,
-    var(---darker-color) 100%
+    var(---dark) 0%,
+    var(---darkest) 100%
   );
-  color: var(---light-color);
+  color: var(---light);
   margin: 0;
   display: flex;
   width: 100vw;
@@ -52,14 +52,14 @@ p {
 #content-box {
   flex: 0 1200px;
   background: var(---dark-grey);
-  border: 4px dashed var(---light-grey-color);
+  border: 4px dashed var(---light-grey);
   margin: 8px;
   max-width: 1200px;
 }
 
 #logo {
   padding: 8px 8px 8px 4px;
-  color: var(---light-grey-color);
+  color: var(---light-grey);
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -81,11 +81,11 @@ p {
 }
 
 .dashed-bottom {
-  border-bottom: 4px dashed var(---light-grey-color);
+  border-bottom: 4px dashed var(---light-grey);
 }
 
 .dashed-right {
-  border-right: 4px dashed var(---light-grey-color);
+  border-right: 4px dashed var(---light-grey);
 }
 
 .flex-center {
@@ -211,7 +211,7 @@ p {
   min-width: 0;
   height: 28px;
 
-  border: 2px dotted var(---light-grey-color);
+  border: 2px dotted var(---light-grey);
 }
 
 .info-table-cell-title {
@@ -226,19 +226,40 @@ p {
   width: 150px;
 }
 
-.search-result {
-  padding: 4px 4px 4px 0;
-  min-height: 0;
-}
-
-.search-result > h4 {
+.button {
+  color: var(---light-grey);
+  display: flex;
+  align-items: center;
+  text-align: center;
   cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-.search-result:not(:last-child):after {
-  content: "";
-  display: inline-block;
-  background-color: var(---grey-color);
-  height: 2px;
-  width: 100%;
+.button:hover,
+.button:active,
+.button:focus,
+.active-button:hover,
+.active-button:active,
+.active-button:focus {
+  color: var(---lightest);
 }
+
+.active-button {
+  color: var(---light);
+}
+
+.button:not(:last-child) {
+  border-right: 3px solid var(---grey);
+}
+
+.button > h3 {
+  margin: 0 auto;
+  padding: 0;
+  font-size: 1.05em;
+}
+

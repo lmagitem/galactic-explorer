@@ -5,6 +5,7 @@ import { Star } from "../../models/star";
 import { StarSystem } from "../../models/star-system";
 import { formatOrbitalPointName } from "../../utils/orbital-point-display";
 import { formatSpectralType } from "../../utils/star-display";
+import "./FilteredSearchResult.css";
 
 export interface FilteredSearchResultProps {
   orbitalPoint: OrbitalPoint;
@@ -20,8 +21,8 @@ export function FilteredSearchResult({
   ) as StarSystem;
 
   return (
-    <div className="search-result">
-      <h4 onClick={onClick}>
+    <div className="search-result" onClick={onClick}>
+      <h4>
         -{"-".repeat(orbitalPoint.depth)}{" "}
         {formatOrbitalPointName(orbitalPoint, system)}
       </h4>
