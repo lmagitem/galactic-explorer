@@ -9,12 +9,7 @@ import { OrbitalPoint } from "./models/orbital-point";
 import { selectAstronomicalObject } from "./store/astronomical-object.slice";
 import PixiStage from "./components/PixiStage";
 import ObjectDetailsSection from "./components/ObjectDetailsSection";
-import {
-  FocusScale,
-  FocusScaleEnum,
-  NavState,
-  NavStateEnum,
-} from "./store/app.actions";
+import { FocusScale, FocusScaleEnum, NavState, NavStateEnum } from "./store/app.actions";
 import { setFocusScale, setNavState } from "./store/app.slice";
 import SettingsDefinitionSection from "./components/SettingsDefinitionSection";
 import { useEffect } from "react";
@@ -22,13 +17,10 @@ import { useEffect } from "react";
 function App() {
   const dispatch = useDispatch();
   const system = useSelector((s: any) => s.starSystem.current) as StarSystem;
-  const currentObject = useSelector(
-    (s: any) => s.astronomicalObject.current
-  ) as OrbitalPoint;
+  const currentObject = useSelector((s: any) => s.astronomicalObject.current) as OrbitalPoint;
 
   useEffect(() => {
-  if (currentObject === undefined)
-    dispatch(selectAstronomicalObject(system.mainStar));
+    if (currentObject === undefined) dispatch(selectAstronomicalObject(system.mainStar));
   }, [system]);
 
   const navState = useSelector((s: any) => s.app.navState) as NavState;
@@ -37,7 +29,7 @@ function App() {
   return (
     <div id="body-container" className="flex-center">
       <div id="content-box" className="grow padded-dash flex-vertical">
-        <div className="dashed-bottom">
+        <div id="header" className="dashed-bottom">
           <nav className="padded-dash-bottom grow flex-horizontal">
             <Logo />
             <GalaxyRecap />
@@ -54,13 +46,13 @@ function App() {
           </nav>
         </div>
         <main className="grow flex-vertical padded-dash-top">
-          <div className="dashed-bottom">
+          <div id="details" className="dashed-bottom">
             {navState === NavStateEnum.Display && <ObjectDetailsSection />}
             {navState === NavStateEnum.Settings && <SettingsDefinitionSection />}
           </div>
           <div className="grow flex-horizontal padded-dash-top">
             <section className="half-width flex-vertical padded-dash-right dashed-right">
-              <div className="dashed-bottom padded-dash-bottom flex-horizontal">
+              <div id="map-buttons" className="dashed-bottom padded-dash-bottom flex-horizontal">
                 <HeaderButton
                   title="Galaxy"
                   active={focusScale === FocusScaleEnum.Galaxy}

@@ -1,6 +1,6 @@
 import { StarLuminosityClass, StarLuminosityClassEnum } from "../models/star-luminosity-class";
 import { StarSpectralType, StarSpectralTypeEnum } from "../models/star-spectral-type";
-import { calculateLogWithMinAndMax } from "./math";
+import { smoothScaleValueLog } from "./math";
 
 export const formatSpectralType =
     (spectralType: StarSpectralType | undefined, luminosityClass: StarLuminosityClass | undefined): string => {
@@ -93,21 +93,11 @@ export const calculateStarDisplaySize = (radius: number): number => {
     const maxVal = 500;
     const minLogVal = 1;
     const maxLogVal = 20;
-    return calculateLogWithMinAndMax(radius, minVal, maxVal, minLogVal, maxLogVal);
+    return smoothScaleValueLog(radius, minVal, maxVal, minLogVal, maxLogVal);
 }
 
-export const calculateStarRadiusForGraph = (radius: number): number => {
+export const calculateStarRadiusForGraph = (radius: number, maxVal: number): number => {
     const minVal = 1.16136118908e-5;
-    const maxVal = 10;
-    const minLogVal = 1;
-    const maxLogVal = 10;
-    return calculateLogWithMinAndMax(radius, minVal, maxVal, minLogVal, maxLogVal);
-}
-
-export const calculateOrbitalPointDistanceForGraph = (distance: number): number => {
-    const minVal = 1;
-    const maxVal = 100000;
-    const minLogVal = 100;
-    const maxLogVal = 15000;
-    return calculateLogWithMinAndMax(distance, minVal, maxVal, minLogVal, maxLogVal);
+    const newMin = 10;
+    return smoothScaleValueLog(radius, minVal, maxVal, newMin, maxVal);
 }
