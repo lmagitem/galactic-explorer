@@ -1,6 +1,7 @@
 import { SyntheticEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GenerationSettings } from "../../models/settings";
+import { fetchGalaxy } from "../../store/galaxy.effects";
 import { setSettings } from "../../store/settings.slice";
 import { fetchStarSystem } from "../../store/star-system.effects";
 import store from "../../store/store";
@@ -14,6 +15,7 @@ export function SettingsDefinitionSection({}) {
   const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     store.dispatch(fetchStarSystem);
+    store.dispatch(fetchGalaxy);
   };
 
   return (

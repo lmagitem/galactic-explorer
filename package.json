@@ -9,14 +9,13 @@
     "lint:fix": "eslint --fix",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./",
     "build": "tsc && vite build",
-    "preview": "vite preview",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
     "@tippyjs/react": "^4.2.6",
     "mathjs": "^11.6.0",
+    "object-hash": "^3.0.0",
     "pixi-viewport": "^4.38.0",
     "pixi.js": "^6.5.8",
     "prop-types": "^15.8.1",
@@ -27,13 +26,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
-    "@storybook/addon-actions": "^6.5.16",
-    "@storybook/addon-essentials": "^6.5.16",
-    "@storybook/addon-interactions": "^6.5.16",
-    "@storybook/addon-links": "^6.5.16",
-    "@storybook/builder-vite": "^0.4.2",
-    "@storybook/react": "^6.5.16",
-    "@storybook/testing-library": "^0.0.13",
+    "@total-typescript/ts-reset": "^0.4.2",
+    "@types/object-hash": "^3.0.2",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@typescript-eslint/eslint-plugin": "^5.54.1",

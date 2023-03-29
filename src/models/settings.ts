@@ -124,7 +124,7 @@ export interface GenerationSettings {
 };
 
 export const defaultSettings: GenerationSettings = {
-    "seed": "default",
+    "seed": "179298",
     "universe": {
         "fixed_era": null,
         "era_before": null,

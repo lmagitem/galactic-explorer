@@ -1,5 +1,4 @@
 import { starSystemApi } from "../api/star-system.api";
-import { convertStarSystemFromDTO } from "../utils/dto-conversion";
 import { NavStateEnum } from "./app.actions";
 import { setNavState } from "./app.slice";
 import { selectAstronomicalObject } from "./astronomical-object.slice";

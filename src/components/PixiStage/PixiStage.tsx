@@ -13,6 +13,7 @@ import { getStarColorAsNumber } from "../../utils/color";
 import { OrbitalPoint } from "../../models/orbital-point";
 import { selectAstronomicalObject } from "../../store/astronomical-object.slice";
 import { AnyAction } from "@reduxjs/toolkit";
+import { Galaxy } from "../../models/galaxy";
 
 export const SIZE = 2000;
 export const CANVAS_SIZE = 3000;
@@ -34,8 +35,9 @@ let viewport: Viewport;
 
 export function PixiStage({}) {
   const dispatch = useDispatch();
-  const system = useSelector((state: any) => state.starSystem.current) as StarSystem;
+  const system = useSelector((s: any) => s.starSystem.current) as StarSystem;
   const currentObject = useSelector((s: any) => s.astronomicalObject.current) as OrbitalPoint;
+  const galaxy = useSelector((s: any) => s.galaxy.current) as Galaxy;
   const ref = useRef(null);
   let wrapperCurrent: any;
   let width = 300;
@@ -207,7 +209,7 @@ function drawSatellites(
     // Create the path that the satellite will follow
     let path = new PIXI.Graphics() as PixiPath;
     path.lineStyle(1, pathColors[(orbitalPoint?.depth || 0) % pathColors.length]);
-    const drawnDistance = (orbitalPoint.distanceFromPrimary || 0) * multiplier;
+    let drawnDistance = (orbitalPoint.distanceFromPrimary || 0) * multiplier;
     path.drawEllipse(0, 0, drawnDistance, drawnDistance);
     path.endFill();
     path.id = orbitalPoint.id;
@@ -216,6 +218,7 @@ function drawSatellites(
 
     // Create a new satellite
     let satellite = drawObject(orbitalPoint, multiplier);
+    drawnDistance -= orbitalPoint.type === AstronomicalObject.Void ? satellite.radius : 0;
     satellite.y = i === 1 ? -drawnDistance : drawnDistance;
     satellite.id = orbitalPoint.id;
     satellite.speed = 0.001 * (orbitalPoint.depth || 1);
@@ -243,6 +246,7 @@ function drawObject(orbitalPoint: OrbitalPoint, multiplier: number) {
   });
   console.log("id", orbitalPoint.id);
   let radius = calculateDisplayRadius(orbitalPoint, multiplier);
+  satellite.radius = radius;
 
   if (orbitalPoint.type === AstronomicalObject.Star) {
     const color = getStarColorAsNumber((orbitalPoint as Star).temperature);
@@ -257,34 +261,36 @@ function drawObject(orbitalPoint: OrbitalPoint, multiplier: number) {
       satellite.tint = 0x00ff00;
     });
     satellite.beginFill(0x00ff00);
-    satellite.drawPolygon(new PIXI.Polygon([
-      radius * 0.33,
-      radius * 0.5,
-      radius * 0.66,
-      radius * 0.5,
-      radius * 0.66,
-      radius * 0.5 + radius * 0.33,
-      radius,
-      radius * 0.5 + radius * 0.33,
-      radius,
-      radius * 0.5 + radius * 0.66,
-      radius * 0.66,
-      radius * 0.5 + radius * 0.66,
-      radius * 0.66,
-      radius * 0.5 + radius,
-      radius * 0.33,
-      radius * 0.5 + radius,
-      radius * 0.33,
-      radius * 0.5 + radius * 0.66,
-      0,
-      radius * 0.5 + radius * 0.66,
-      0,
-      radius * 0.5 + radius * 0.33,
-      radius * 0.33,
-      radius * 0.5 + radius * 0.33,
-      radius * 0.33,
-      radius * 0.5,
-    ]));
+    satellite.drawPolygon(
+      new PIXI.Polygon([
+        radius * 0.33,
+        radius * 0.5,
+        radius * 0.66,
+        radius * 0.5,
+        radius * 0.66,
+        radius * 0.5 + radius * 0.33,
+        radius,
+        radius * 0.5 + radius * 0.33,
+        radius,
+        radius * 0.5 + radius * 0.66,
+        radius * 0.66,
+        radius * 0.5 + radius * 0.66,
+        radius * 0.66,
+        radius * 0.5 + radius,
+        radius * 0.33,
+        radius * 0.5 + radius,
+        radius * 0.33,
+        radius * 0.5 + radius * 0.66,
+        0,
+        radius * 0.5 + radius * 0.66,
+        0,
+        radius * 0.5 + radius * 0.33,
+        radius * 0.33,
+        radius * 0.5 + radius * 0.33,
+        radius * 0.33,
+        radius * 0.5,
+      ]),
+    );
     satellite.endFill();
   } else {
     throw new Error(
@@ -297,14 +303,18 @@ function drawObject(orbitalPoint: OrbitalPoint, multiplier: number) {
 
 function calculateDisplayRadius(center: OrbitalPoint, multiplier: number) {
   let radius = (center as Star).radius || 0;
-  console.log("multiplier", multiplier);
-  console.log("radius 1", radius);
-  radius = convertSolarRadiiToAU(radius);
-  console.log("radius 2", radius);
-  radius = radius * multiplier;
-  console.log("radius 3", radius);
-  radius = normalize(radius);
-  console.log("radius 4", radius);
+  if (center.type === AstronomicalObject.Void) {
+    radius = 5;;
+  } else {
+    console.log("multiplier", multiplier);
+    console.log("radius 1", radius);
+    radius = convertSolarRadiiToAU(radius);
+    console.log("radius 2", radius);
+    radius = radius * multiplier;
+    console.log("radius 3", radius);
+    radius = normalize(radius);
+    console.log("radius 4", radius);
+  }
   return radius;
 }
 

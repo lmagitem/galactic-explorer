@@ -13,14 +13,19 @@ import { FocusScale, FocusScaleEnum, NavState, NavStateEnum } from "./store/app.
 import { setFocusScale, setNavState } from "./store/app.slice";
 import SettingsDefinitionSection from "./components/SettingsDefinitionSection";
 import { useEffect } from "react";
+import { Galaxy } from "./models/galaxy";
 
 function App() {
   const dispatch = useDispatch();
   const system = useSelector((s: any) => s.starSystem.current) as StarSystem;
   const currentObject = useSelector((s: any) => s.astronomicalObject.current) as OrbitalPoint;
+  const galaxy = useSelector((s: any) => s.galaxy.current) as Galaxy;
 
   useEffect(() => {
-    if (currentObject === undefined) dispatch(selectAstronomicalObject(system.mainStar));
+    if (!!system && currentObject === undefined)
+      dispatch(selectAstronomicalObject(system.mainStar));
+
+    console.log("galaxy", galaxy);
   }, [system]);
 
   const navState = useSelector((s: any) => s.app.navState) as NavState;

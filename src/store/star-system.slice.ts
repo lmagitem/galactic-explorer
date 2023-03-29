@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { initialSystem, StarSystem } from "../models/star-system";
-import { convertStarSystemFromDTO } from "../utils/dto-conversion";
+import { convertStarSystemFromDTO } from "../utils/dto-conversion/star-system-dto-conversion";
 import { SetStarSystemAction, SetStarSystemFromDTOAction } from "./star-system.actions";
 
 export interface StarSystemState { current: StarSystem };

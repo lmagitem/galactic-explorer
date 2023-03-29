@@ -98,6 +98,6 @@ export const calculateStarDisplaySize = (radius: number): number => {
 
 export const calculateStarRadiusForGraph = (radius: number, maxVal: number): number => {
     const minVal = 1.16136118908e-5;
-    const newMin = 10;
+    const newMin = 2;
     return smoothScaleValueLog(radius, minVal, maxVal, newMin, maxVal);
 }
