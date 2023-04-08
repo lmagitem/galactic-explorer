@@ -25,7 +25,7 @@ function App() {
     if (!!system && currentObject === undefined)
       dispatch(selectAstronomicalObject(system.mainStar));
 
-    console.log("galaxy", galaxy);
+    // console.log("galaxy", galaxy);
   }, [system]);
 
   const navState = useSelector((s: any) => s.app.navState) as NavState;

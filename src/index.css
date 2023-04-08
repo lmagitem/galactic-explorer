@@ -255,7 +255,7 @@ p {
 }
 
 .button:not(:last-child) {
-  border-right: 3px solid var(---grey);
+  border-right: 2px solid var(---grey);
 }
 
 .button > h3 {
@@ -263,4 +263,3 @@ p {
   padding: 0;
   font-size: 1.05em;
 }
-
