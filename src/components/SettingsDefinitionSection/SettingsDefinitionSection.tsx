@@ -6,6 +6,8 @@ import { setSettings } from "../../store/settings.slice";
 import { fetchStarSystem } from "../../store/star-system.effects";
 import store from "../../store/store";
 import "./SettingsDefinitionSection.css";
+import { SimpleTextInput } from "../SimpleTextInput/SimpleTextInput";
+import SimpleNumberInput from "../SimpleNumberInput";
 
 export function SettingsDefinitionSection({}) {
   const dispatch = useDispatch();
@@ -22,17 +24,33 @@ export function SettingsDefinitionSection({}) {
     <section className="grow flex-horizontal padded-dash-bottom">
       <form className="grow" onSubmit={handleSubmit}>
         <div className="grow dashed-bottom padded-dash-bottom flex-center">
-          <div className="grow padded align-center">
-            <label className="grow">
-              Seed:
-              <input
-                type="text"
-                className="text-input"
-                value={seed}
-                onChange={(e) => dispatch(setSettings({ ...settings, seed: e.target.value }))}
-              />
-            </label>
-          </div>
+          <SimpleTextInput
+            label={"Seed:"}
+            initialValue={seed}
+            onChanges={(e: React.ChangeEvent<HTMLInputElement>) =>
+              dispatch(setSettings({ ...settings, seed: e.target.value }))
+            }
+          />
+        </div>
+        <div className="grow dashed-bottom padded-dash-bottom flex-center">
+          <SimpleNumberInput
+            label={"Fixed age:"}
+            initialValue={""}
+            onChanges={(e: React.ChangeEvent<HTMLInputElement>) => {
+              if (/^-?[0-9]\d*\.?\d*$/.test(e.target.value)) {
+                dispatch(
+                  setSettings({
+                    ...settings,
+                    universe: { ...settings.universe, fixed_age: parseFloat(e.target.value) },
+                  }),
+                );
+              } else if (e.target.value === "") {
+                dispatch(
+                  setSettings({ ...settings, universe: { ...settings.universe, fixed_age: null } }),
+                );
+              }
+            }}
+          />
         </div>
         <div className="grow flex-center">
           <button className="grow padded button" type="submit">
