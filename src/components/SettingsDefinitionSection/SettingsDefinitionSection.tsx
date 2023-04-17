@@ -6,6 +6,7 @@ import { setSettings } from "../../store/settings.slice";
 import { fetchStarSystem } from "../../store/star-system.effects";
 import store from "../../store/store";
 import "./SettingsDefinitionSection.css";
+
 import { SimpleTextInput } from "../SimpleTextInput/SimpleTextInput";
 import SimpleNumberInput from "../SimpleNumberInput";
 
@@ -13,6 +14,7 @@ export function SettingsDefinitionSection({}) {
   const dispatch = useDispatch();
   const settings = useSelector((state: any) => state.settings.current) as GenerationSettings;
   const seed = settings.seed;
+  const fixed_age = settings.universe.fixed_age;
 
   const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,29 +28,21 @@ export function SettingsDefinitionSection({}) {
         <div className="grow dashed-bottom padded-dash-bottom flex-center">
           <SimpleTextInput
             label={"Seed:"}
-            initialValue={seed}
+            value={seed}
             onChanges={(e: React.ChangeEvent<HTMLInputElement>) =>
-              dispatch(setSettings({ ...settings, seed: e.target.value }))
+              dispatch(setSettings({ ...settings, seed: e.target?.value }))
             }
           />
         </div>
         <div className="grow dashed-bottom padded-dash-bottom flex-center">
           <SimpleNumberInput
             label={"Fixed age:"}
-            initialValue={""}
-            onChanges={(e: React.ChangeEvent<HTMLInputElement>) => {
-              if (/^-?[0-9]\d*\.?\d*$/.test(e.target.value)) {
-                dispatch(
-                  setSettings({
-                    ...settings,
-                    universe: { ...settings.universe, fixed_age: parseFloat(e.target.value) },
-                  }),
-                );
-              } else if (e.target.value === "") {
-                dispatch(
-                  setSettings({ ...settings, universe: { ...settings.universe, fixed_age: null } }),
-                );
-              }
+            value={fixed_age}
+            onChanges={(value: number | null) => {
+              console.log(value);
+              dispatch(
+                setSettings({ ...settings, universe: { ...settings.universe, fixed_age: value } }),
+              );
             }}
           />
         </div>
