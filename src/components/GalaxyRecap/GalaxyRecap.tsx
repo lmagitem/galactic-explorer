@@ -40,30 +40,32 @@ const getFormattedGalaxyCategory = (galaxy: Galaxy): string => {
         : 0;
   } else {
     w =
-      (!!galaxy.category.Intergalactic && galaxy.category.Intergalactic.length > 0
+      !!galaxy.category.Intergalactic && galaxy.category.Intergalactic.length > 0
         ? galaxy.category.Intergalactic[0]
         : !!galaxy.category.Irregular && galaxy.category.Irregular.length > 0
         ? galaxy.category.Irregular[0]
         : !!galaxy.category.Intracluster && galaxy.category.Intracluster.length > 0
         ? galaxy.category.Intracluster[0]
-        : 0);
+        : 0;
     h =
-    (!!galaxy.category.Intergalactic && galaxy.category.Intergalactic.length > 1
-      ? galaxy.category.Intergalactic[1]
-      : !!galaxy.category.Irregular && galaxy.category.Irregular.length > 1
-      ? galaxy.category.Irregular[1]
-      : !!galaxy.category.Intracluster && galaxy.category.Intracluster.length > 1
-      ? galaxy.category.Intracluster[1]
-      : 0);
+      !!galaxy.category.Intergalactic && galaxy.category.Intergalactic.length > 1
+        ? galaxy.category.Intergalactic[1]
+        : !!galaxy.category.Irregular && galaxy.category.Irregular.length > 1
+        ? galaxy.category.Irregular[1]
+        : !!galaxy.category.Intracluster && galaxy.category.Intracluster.length > 1
+        ? galaxy.category.Intracluster[1]
+        : 0;
     d =
-    (!!galaxy.category.Intergalactic && galaxy.category.Intergalactic.length > 2
-      ? galaxy.category.Intergalactic[2]
-      : !!galaxy.category.Irregular && galaxy.category.Irregular.length > 2
-      ? galaxy.category.Irregular[2]
-      : !!galaxy.category.Intracluster && galaxy.category.Intracluster.length > 2
-      ? galaxy.category.Intracluster[2]
-      : 0);
+      !!galaxy.category.Intergalactic && galaxy.category.Intergalactic.length > 2
+        ? galaxy.category.Intergalactic[2]
+        : !!galaxy.category.Irregular && galaxy.category.Irregular.length > 2
+        ? galaxy.category.Irregular[2]
+        : !!galaxy.category.Intracluster && galaxy.category.Intracluster.length > 2
+        ? galaxy.category.Intracluster[2]
+        : 0;
   }
 
-  return `${w}×${h}×${d} parsecs ${galaxy.isDominant ? "Dominant" : galaxy.isMajor ? "Major" : "Minor"} ${(galaxy.subCategory as string).replace(/([A-Z])/g, ' $1').trim()} Galaxy.`;
+  return `${w}×${h}×${d} parsecs ${
+    galaxy.isDominant ? "Dominant" : galaxy.isMajor ? "Major" : "Minor"
+  } ${(galaxy.subCategory as string).replace(/([A-Z])/g, " $1").trim()} Galaxy.`;
 };

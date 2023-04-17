@@ -12,25 +12,17 @@ export interface FilteredSearchResultProps {
   onClick?: () => void;
 }
 
-export function FilteredSearchResult({
-  orbitalPoint,
-  onClick,
-}: FilteredSearchResultProps) {
-  const system = useSelector(
-    (state: any) => state.starSystem.current
-  ) as StarSystem;
+export function FilteredSearchResult({ orbitalPoint, onClick }: FilteredSearchResultProps) {
+  const system = useSelector((state: any) => state.starSystem.current) as StarSystem;
 
   return (
     <div className="search-result" onClick={onClick}>
       <h4>
-        -{"-".repeat(orbitalPoint.depth)}{" "}
-        {formatOrbitalPointName(orbitalPoint, system)}
+        -{"-".repeat(orbitalPoint.depth)} {formatOrbitalPointName(orbitalPoint, system)}
       </h4>
       <div className="padded-left">
-        {orbitalPoint.type === AstronomicalObject.Star &&
-          printStarType(orbitalPoint as Star)}
-        {orbitalPoint.satelliteIds.length > 0 &&
-          printSatellites(orbitalPoint.satelliteIds, system)}
+        {orbitalPoint.type === AstronomicalObject.Star && printStarType(orbitalPoint as Star)}
+        {orbitalPoint.satelliteIds.length > 0 && printSatellites(orbitalPoint.satelliteIds, system)}
       </div>
     </div>
   );
@@ -40,18 +32,15 @@ const printStarType = (star: Star): JSX.Element => (
   <p>{formatSpectralType(star.spectralType, star.luminosityClass)}</p>
 );
 
-const printSatellites = (
-  satelliteIds: number[],
-  system: StarSystem
-): JSX.Element => (
+const printSatellites = (satelliteIds: number[], system: StarSystem): JSX.Element => (
   <p>
     Orbited by:{" "}
     {satelliteIds
       .map((id) =>
         formatOrbitalPointName(
           system.allObjects.find((o) => o.id === id),
-          system
-        )
+          system,
+        ),
       )
       .join(", ")}
   </p>

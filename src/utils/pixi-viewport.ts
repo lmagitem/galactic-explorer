@@ -1,12 +1,12 @@
-import { Viewport } from 'pixi-viewport';
-import { Renderer } from 'pixi.js';
+import { Viewport } from "pixi-viewport";
+import { Renderer } from "pixi.js";
 
 export const createViewport = (
   worldWidth: number,
   worldHeight: number,
   screenWidth: any,
   screenHeight: any,
-  renderer: Renderer
+  renderer: Renderer,
 ): Viewport => {
   return new Viewport({
     // world width used by viewport (automatically calculated based on container width)
@@ -76,8 +76,8 @@ export const createViewport = (
     })
     .clamp({
       // (all, x, or y) using clamps of [0, this.viewport.worldWidth / this.viewport.worldHeight]; replaces left / right / top / bottom if set
-      direction: 'all',
+      direction: "all",
     })
     .clampZoom({ maxScale: 1000, maxWidth: worldWidth, maxHeight: worldHeight })
     .setZoom(1);
-}
+};

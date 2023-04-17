@@ -6,24 +6,16 @@ import { Star } from "../../models/star";
 import { StarSystem } from "../../models/star-system";
 import { toDecimals } from "../../utils/math";
 import { formatOrbitalPointName } from "../../utils/orbital-point-display";
-import {
-  formatSpectralType,
-  formatSpectralShortHand,
-} from "../../utils/star-display";
+import { formatSpectralType, formatSpectralShortHand } from "../../utils/star-display";
 import "./AstronomicalObjectsDetails.css";
 
 export interface AstronomicalObjectsDetailsProps {
   object: OrbitalPoint;
 }
 
-export function AstronomicalObjectsDetails({
-  object,
-}: AstronomicalObjectsDetailsProps) {
-  const system = useSelector(
-    (state: any) => state.starSystem.current
-  ) as StarSystem;
-  const star =
-    object.type === AstronomicalObject.Star ? (object as Star) : undefined;
+export function AstronomicalObjectsDetails({ object }: AstronomicalObjectsDetailsProps) {
+  const system = useSelector((state: any) => state.starSystem.current) as StarSystem;
+  const star = object.type === AstronomicalObject.Star ? (object as Star) : undefined;
 
   return (
     <div className="grow details padded-horizontal padded-bottom">
@@ -47,10 +39,7 @@ export function AstronomicalObjectsDetails({
                 <div className="info-table-cell-title">Type</div>
                 <div className="info-table-cell-hr"></div>
                 <div className="info-table-cell-content">
-                  {formatSpectralType(
-                    star?.spectralType,
-                    star?.luminosityClass
-                  )}
+                  {formatSpectralType(star?.spectralType, star?.luminosityClass)}
                 </div>
               </div>
             </Tippy>
@@ -62,7 +51,7 @@ export function AstronomicalObjectsDetails({
                   {formatSpectralShortHand(
                     star?.spectralType,
                     star?.spectralTypeSubClass,
-                    star?.luminosityClass
+                    star?.luminosityClass,
                   )}
                 </div>
               </div>
@@ -71,45 +60,35 @@ export function AstronomicalObjectsDetails({
               <div className="info-table-couple">
                 <div className="info-table-cell-title">Age</div>
                 <div className="info-table-cell-hr"></div>
-                <div className="info-table-cell-content">
-                  {toDecimals(star?.age, 3)} Byrs
-                </div>
+                <div className="info-table-cell-content">{toDecimals(star?.age, 3)} Byrs</div>
               </div>
             </Tippy>
             <Tippy content="This star's mass, in Solar Masses.">
               <div className="info-table-couple">
                 <div className="info-table-cell-title">Mass</div>
                 <div className="info-table-cell-hr"></div>
-                <div className="info-table-cell-content">
-                  {toDecimals(star?.mass, 5)} M☉
-                </div>
+                <div className="info-table-cell-content">{toDecimals(star?.mass, 5)} M☉</div>
               </div>
             </Tippy>
             <Tippy content="This star's luminosity, in Solar Luminosity.">
               <div className="info-table-couple">
                 <div className="info-table-cell-title">Luminosity</div>
                 <div className="info-table-cell-hr"></div>
-                <div className="info-table-cell-content">
-                  {toDecimals(star?.luminosity, 5)} L☉
-                </div>
+                <div className="info-table-cell-content">{toDecimals(star?.luminosity, 5)} L☉</div>
               </div>
             </Tippy>
             <Tippy content="This star's mass, in Solar Radii.">
               <div className="info-table-couple">
                 <div className="info-table-cell-title">Radius</div>
                 <div className="info-table-cell-hr"></div>
-                <div className="info-table-cell-content">
-                  {toDecimals(star?.radius, 5)} R☉
-                </div>
+                <div className="info-table-cell-content">{toDecimals(star?.radius, 5)} R☉</div>
               </div>
             </Tippy>
             <Tippy content="This star's surface temperature, in Kelvin.">
               <div className="info-table-couple">
                 <div className="info-table-cell-title">Temperature</div>
                 <div className="info-table-cell-hr"></div>
-                <div className="info-table-cell-content">
-                  {star?.temperature} K
-                </div>
+                <div className="info-table-cell-content">{star?.temperature} K</div>
               </div>
             </Tippy>
           </>

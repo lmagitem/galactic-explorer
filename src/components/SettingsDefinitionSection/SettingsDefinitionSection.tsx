@@ -6,7 +6,6 @@ import { setSettings } from "../../store/settings.slice";
 import { fetchStarSystem } from "../../store/star-system.effects";
 import store from "../../store/store";
 import "./SettingsDefinitionSection.css";
-
 import { SimpleTextInput } from "../SimpleTextInput/SimpleTextInput";
 import SimpleNumberInput from "../SimpleNumberInput";
 

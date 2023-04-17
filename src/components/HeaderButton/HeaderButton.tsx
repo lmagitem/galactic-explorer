@@ -10,7 +10,7 @@ export function HeaderButton({ title, active, onClick }: HeaderButtonProps) {
       className={(active ? "active-button " : "") + "grow padded button"}
       onClick={() => {
         if (onClick) onClick();
-        setTimeout(()=> window.dispatchEvent(new Event("resize")));
+        setTimeout(() => window.dispatchEvent(new Event("resize")));
       }}
     >
       <h3>{title}</h3>

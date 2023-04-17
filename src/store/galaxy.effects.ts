@@ -6,9 +6,9 @@ import { selectAstronomicalObject } from "./astronomical-object.slice";
 import { setGalaxyFromDTO } from "./galaxy.slice";
 
 export async function fetchGalaxy(dispatch: any, getState: () => any) {
-    const state = getState();
-    const response = await galaxyApi.loadGalaxy(state.settings.current);
-    dispatch(selectAstronomicalObject(undefined))
-    dispatch(setGalaxyFromDTO(response as GalaxyDTO))
-    dispatch(setNavState(NavStateEnum.Display))
+  const state = getState();
+  const response = await galaxyApi.loadGalaxy(state.settings.current);
+  dispatch(selectAstronomicalObject(undefined));
+  dispatch(setGalaxyFromDTO(response as GalaxyDTO));
+  dispatch(setNavState(NavStateEnum.Display));
 }

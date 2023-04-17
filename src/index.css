@@ -20,11 +20,7 @@ html {
 body,
 #root,
 #body-container {
-  background: radial-gradient(
-    circle,
-    var(---dark) 0%,
-    var(---darkest) 100%
-  );
+  background: radial-gradient(circle, var(---dark) 0%, var(---darkest) 100%);
   color: var(---light);
   margin: 0;
   display: flex;

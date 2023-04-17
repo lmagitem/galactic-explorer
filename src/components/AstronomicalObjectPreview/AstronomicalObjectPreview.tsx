@@ -9,9 +9,7 @@ export interface AstronomicalObjectPreviewProps {
   object: OrbitalPoint;
 }
 
-export function AstronomicalObjectPreview({
-  object,
-}: AstronomicalObjectPreviewProps) {
+export function AstronomicalObjectPreview({ object }: AstronomicalObjectPreviewProps) {
   if (object.type === AstronomicalObject.Star) {
     const star = object as Star;
     const color = getStarColor(star.temperature);

@@ -1,6 +1,6 @@
 export enum AstronomicalObject {
-    Void = "Void",
-    Star = "Star",
+  Void = "Void",
+  Star = "Star",
 }
 export type AstronomicalObjectType = typeof AstronomicalObject | keyof typeof AstronomicalObject;
 

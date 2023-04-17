@@ -5,7 +5,7 @@ import AstronomicalObjectPreview from "../AstronomicalObjectPreview";
 
 export function ObjectDetailsSection({}) {
   const currentObject = useSelector(
-    (state: any) => state.astronomicalObject.current
+    (state: any) => state.astronomicalObject.current,
   ) as OrbitalPoint;
 
   return (
