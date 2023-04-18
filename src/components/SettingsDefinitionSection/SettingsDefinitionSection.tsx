@@ -8,12 +8,16 @@ import store from "../../store/store";
 import "./SettingsDefinitionSection.css";
 import { SimpleTextInput } from "../SimpleTextInput/SimpleTextInput";
 import SimpleNumberInput from "../SimpleNumberInput";
+import Tippy from "@tippyjs/react";
 
 export function SettingsDefinitionSection({}) {
   const dispatch = useDispatch();
   const settings = useSelector((state: any) => state.settings.current) as GenerationSettings;
   const seed = settings.seed;
-  const fixed_age = settings.universe.fixed_age;
+  const uniFixedAge = settings.universe.fixed_age;
+  const uniAgeBefore = settings.universe.age_before;
+  const uniAgeAfter = settings.universe.age_after;
+  const galFixedAge = settings.galaxy.fixed_age;
 
   const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,25 +29,96 @@ export function SettingsDefinitionSection({}) {
     <section className="grow flex-horizontal padded-dash-bottom">
       <form className="grow" onSubmit={handleSubmit}>
         <div className="grow dashed-bottom padded-dash-bottom flex-center">
-          <SimpleTextInput
-            label={"Seed:"}
-            value={seed}
-            onChanges={(e: React.ChangeEvent<HTMLInputElement>) =>
-              dispatch(setSettings({ ...settings, seed: e.target?.value }))
-            }
-          />
+          Global
+          <Tippy content="The seed to use to generate everything.">
+            <div>
+              <SimpleTextInput
+                label={"Seed:"}
+                value={seed}
+                onChanges={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  dispatch(setSettings({ ...settings, seed: e.target?.value }))
+                }
+              />
+            </div>
+          </Tippy>
         </div>
         <div className="grow dashed-bottom padded-dash-bottom flex-center">
-          <SimpleNumberInput
-            label={"Fixed age:"}
-            value={fixed_age}
-            onChanges={(value: number | null) => {
-              console.log(value);
-              dispatch(
-                setSettings({ ...settings, universe: { ...settings.universe, fixed_age: value } }),
-              );
-            }}
-          />
+          Universe
+          <Tippy content="The specific universe age to use if any, in billions of years. Must be higher or equal to 0.4 and lower than 100000. Will overwrite the era if set, and be overwritten if use_ours is set.">
+            <div>
+              <SimpleNumberInput
+                label={"Fixed age:"}
+                value={uniFixedAge}
+                onChanges={(value: number | null) =>
+                  dispatch(
+                    setSettings({
+                      ...settings,
+                      universe: { ...settings.universe, fixed_age: value },
+                    }),
+                  )
+                }
+                min={0.4}
+                max={99999.99999}
+              />
+            </div>
+          </Tippy>
+          <Tippy content="Asks to generate a universe's age randomly, but with an age at least older than the given one. Must be higher or equal to 0.4 and lower than 100000. Will overwrite the era if set, and be overwritten if **use_ours** is set.">
+            <div>
+              <SimpleNumberInput
+                label={"Age before:"}
+                value={uniAgeBefore}
+                onChanges={(value: number | null) =>
+                  dispatch(
+                    setSettings({
+                      ...settings,
+                      universe: { ...settings.universe, age_before: value },
+                    }),
+                  )
+                }
+                min={0.4}
+                max={99999.99999}
+              />
+            </div>
+          </Tippy>
+          <Tippy content="Asks to generate a universe's age randomly, but with an age at least younger than the given one. Must be higher or equal to 0.4 and lower than 100000. Will overwrite the era if set, and be overwritten if use_ours is set.">
+            <div>
+              <SimpleNumberInput
+                label={"Age after:"}
+                value={uniAgeAfter}
+                onChanges={(value: number | null) =>
+                  dispatch(
+                    setSettings({
+                      ...settings,
+                      universe: { ...settings.universe, age_after: value },
+                    }),
+                  )
+                }
+                min={0.4}
+                max={99999.99999}
+              />
+            </div>
+          </Tippy>
+        </div>
+        <div className="grow dashed-bottom padded-dash-bottom flex-center">
+          Galaxy
+          <Tippy content="The specific age to use for galaxy generation, if any.">
+            <div>
+              <SimpleNumberInput
+                label={"Fixed age:"}
+                value={galFixedAge}
+                onChanges={(value: number | null) =>
+                  dispatch(
+                    setSettings({
+                      ...settings,
+                      galaxy: { ...settings.galaxy, fixed_age: value },
+                    }),
+                  )
+                }
+                min={0.4}
+                max={99999.99999}
+              />
+            </div>
+          </Tippy>
         </div>
         <div className="grow flex-center">
           <button className="grow padded button" type="submit">

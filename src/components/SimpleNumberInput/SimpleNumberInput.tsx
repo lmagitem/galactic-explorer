@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export interface SimpleNumberInputProps {
   label: string;
@@ -6,6 +6,8 @@ export interface SimpleNumberInputProps {
   onChanges: (value: number | null) => void;
   allowNegative?: boolean;
   allowDecimal?: boolean;
+  min?: number;
+  max?: number;
 }
 
 export function SimpleNumberInput({
@@ -14,8 +16,15 @@ export function SimpleNumberInput({
   onChanges,
   allowNegative = true,
   allowDecimal = true,
+  min,
+  max,
 }: SimpleNumberInputProps) {
   const [inputValue, setInputValue] = useState(value === null ? "" : value.toString());
+
+  // Update the inputValue state when the value prop changes
+  useEffect(() => {
+    setInputValue(value === null ? "" : value.toString());
+  }, [value]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target?.value;
@@ -29,8 +38,19 @@ export function SimpleNumberInput({
       setInputValue(value);
 
       const numberValue = value === "" ? null : parseFloat(value);
-      if (numberValue === null || !isNaN(numberValue)) {
+      if (numberValue === null) {
         onChanges(numberValue);
+      } else if (!isNaN(numberValue)) {
+        if (
+          (max === undefined || numberValue <= max) &&
+          (min === undefined || numberValue >= min)
+        ) {
+          onChanges(numberValue);
+        } else if (max !== undefined && numberValue > max) {
+          onChanges(max);
+        } else if (min !== undefined && numberValue < min) {
+          onChanges(min);
+        }
       }
     }
   };
