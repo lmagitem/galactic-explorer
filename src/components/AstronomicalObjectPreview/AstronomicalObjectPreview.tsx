@@ -6,11 +6,11 @@ import { calculateStarDisplaySize } from "../../utils/star-display";
 import "./AstronomicalObjectPreview.css";
 
 export interface AstronomicalObjectPreviewProps {
-  object: OrbitalPoint;
+  object: OrbitalPoint | undefined;
 }
 
 export function AstronomicalObjectPreview({ object }: AstronomicalObjectPreviewProps) {
-  if (object.type === AstronomicalObject.Star) {
+  if (object?.type === AstronomicalObject.Star) {
     const star = object as Star;
     const color = getStarColor(star.temperature);
     const fontSize = `${calculateStarDisplaySize(star.radius)}em`;

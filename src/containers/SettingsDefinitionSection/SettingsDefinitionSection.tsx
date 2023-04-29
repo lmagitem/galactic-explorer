@@ -6,9 +6,9 @@ import { setSettings } from "../../store/settings.slice";
 import { fetchStarSystem } from "../../store/star-system.effects";
 import store from "../../store/store";
 import "./SettingsDefinitionSection.css";
-import { SimpleTextInput } from "../SimpleTextInput/SimpleTextInput";
-import SimpleNumberInput from "../SimpleNumberInput";
 import Tippy from "@tippyjs/react";
+import SimpleNumberInput from "../../components/SimpleNumberInput";
+import SimpleTextInput from "../../components/SimpleTextInput";
 
 export function SettingsDefinitionSection({}) {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ export function SettingsDefinitionSection({}) {
     <section className="grow flex-horizontal padded-dash-bottom">
       <form className="grow" onSubmit={handleSubmit}>
         <div className="grow dashed-bottom padded-dash-bottom flex-center">
-          Global
+          <div className="grow">Global</div>
           <Tippy content="The seed to use to generate everything.">
             <div>
               <SimpleTextInput
@@ -43,7 +43,7 @@ export function SettingsDefinitionSection({}) {
           </Tippy>
         </div>
         <div className="grow dashed-bottom padded-dash-bottom flex-center">
-          Universe
+          <div className="grow">Universe</div>
           <Tippy content="The specific universe age to use if any, in billions of years. Must be higher or equal to 0.4 and lower than 100000. Will overwrite the era if set, and be overwritten if use_ours is set.">
             <div>
               <SimpleNumberInput
@@ -100,7 +100,7 @@ export function SettingsDefinitionSection({}) {
           </Tippy>
         </div>
         <div className="grow dashed-bottom padded-dash-bottom flex-center">
-          Galaxy
+          <div className="grow">Galaxy</div>
           <Tippy content="The specific age to use for galaxy generation, if any.">
             <div>
               <SimpleNumberInput

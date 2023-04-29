@@ -1,5 +1,5 @@
 import Tippy from "@tippyjs/react";
-import { useSelector } from "react-redux";
+import "./AstronomicalObjectsDetails.css";
 import { AstronomicalObject } from "../../models/astronomical-object";
 import { OrbitalPoint } from "../../models/orbital-point";
 import { Star } from "../../models/star";
@@ -7,21 +7,20 @@ import { StarSystem } from "../../models/star-system";
 import { toDecimals } from "../../utils/math";
 import { formatOrbitalPointName } from "../../utils/orbital-point-display";
 import { formatSpectralType, formatSpectralShortHand } from "../../utils/star-display";
-import "./AstronomicalObjectsDetails.css";
 
 export interface AstronomicalObjectsDetailsProps {
-  object: OrbitalPoint;
+  object: OrbitalPoint | undefined;
+  system: StarSystem | undefined;
 }
 
-export function AstronomicalObjectsDetails({ object }: AstronomicalObjectsDetailsProps) {
-  const system = useSelector((state: any) => state.starSystem.current) as StarSystem;
-  const star = object.type === AstronomicalObject.Star ? (object as Star) : undefined;
+export function AstronomicalObjectsDetails({ object, system }: AstronomicalObjectsDetailsProps) {
+  const star = object?.type === AstronomicalObject.Star ? (object as Star) : undefined;
 
   return (
     <div className="grow details padded-horizontal padded-bottom">
       <h3 className="align-center">{formatOrbitalPointName(object, system)}</h3>
       <div className="padded-left info-table">
-        {object.primaryBody !== null && (
+        {object?.primaryBody !== null && (
           <Tippy content="The distance in Astronomical Units at which this object orbits its primary body.">
             <div className="info-table-couple">
               <div className="info-table-cell-title">Orbiting at</div>

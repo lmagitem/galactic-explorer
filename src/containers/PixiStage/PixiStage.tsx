@@ -127,6 +127,7 @@ function createPixiApp(appRef: MutableRefObject<PIXI.Application | null>) {
     backgroundColor: 0x222222,
     antialias: true,
     resolution: 1,
+    autoDensity: true,
     resizeTo: container || undefined,
   });
   appRef.current.stage.sortableChildren = true;

@@ -48,8 +48,13 @@ export function SimpleNumberInput({
           onChanges(numberValue);
         } else if (max !== undefined && numberValue > max) {
           onChanges(max);
+          setInputValue(`${max}`);
+        } else if (min !== undefined && numberValue == 0) {
+          onChanges(null);
+          setInputValue("");
         } else if (min !== undefined && numberValue < min) {
           onChanges(min);
+          setInputValue(`${max}`);
         }
       }
     }

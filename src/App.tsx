@@ -1,19 +1,18 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import FilteredSearchResult from "./components/FilteredSearchResult";
 import GalaxyRecap from "./components/GalaxyRecap";
 import HeaderButton from "./components/HeaderButton";
 import Logo from "./components/Logo";
-import { StarSystem } from "./models/star-system";
-import "tippy.js/dist/tippy.css";
-import { OrbitalPoint } from "./models/orbital-point";
-import { selectAstronomicalObject } from "./store/astronomical-object.slice";
-import PixiStage from "./components/PixiStage";
-import ObjectDetailsSection from "./components/ObjectDetailsSection";
-import { FocusScale, FocusScaleEnum, NavState, NavStateEnum } from "./store/app.actions";
-import { setFocusScale, setNavState } from "./store/app.slice";
-import SettingsDefinitionSection from "./components/SettingsDefinitionSection";
-import { useEffect } from "react";
+import ObjectDetailsSection from "./containers/ObjectDetailsSection";
+import PixiStage from "./containers/PixiStage";
+import SettingsDefinitionSection from "./containers/SettingsDefinitionSection";
 import { Galaxy } from "./models/galaxy";
+import { OrbitalPoint } from "./models/orbital-point";
+import { StarSystem } from "./models/star-system";
+import { NavState, FocusScale, NavStateEnum, FocusScaleEnum } from "./store/app.actions";
+import { setNavState, setFocusScale } from "./store/app.slice";
+import { selectAstronomicalObject } from "./store/astronomical-object.slice";
 
 function App() {
   const dispatch = useDispatch();
@@ -37,7 +36,7 @@ function App() {
         <div id="header" className="dashed-bottom">
           <nav className="padded-dash-bottom grow flex-horizontal">
             <Logo />
-            <GalaxyRecap />
+            <GalaxyRecap galaxy={galaxy} />
             <HeaderButton
               title="Display"
               active={navState === NavStateEnum.Display}
@@ -90,6 +89,7 @@ function App() {
                   <FilteredSearchResult
                     key={op.id}
                     orbitalPoint={op}
+                    system={system}
                     onClick={() => dispatch(selectAstronomicalObject(op))}
                   />
                 ))}

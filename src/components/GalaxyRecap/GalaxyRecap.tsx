@@ -1,9 +1,10 @@
-import { useSelector } from "react-redux";
 import { Galaxy } from "../../models/galaxy";
 
-export function GalaxyRecap({}) {
-  const galaxy = useSelector((s: any) => s.galaxy.current) as Galaxy;
+interface GalaxyRecapProps {
+  galaxy: Galaxy | undefined;
+}
 
+export function GalaxyRecap({ galaxy }: GalaxyRecapProps) {
   return (
     <div className="grow padded dashed-right">
       {!!galaxy ? <>In a {getFormattedGalaxyCategory(galaxy)}</> : <>Galaxy data not loaded</>}
