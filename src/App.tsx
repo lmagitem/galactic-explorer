@@ -13,6 +13,7 @@ import { StarSystem } from "./models/star-system";
 import { NavState, FocusScale, NavStateEnum, FocusScaleEnum } from "./store/app.actions";
 import { setNavState, setFocusScale } from "./store/app.slice";
 import { selectAstronomicalObject } from "./store/astronomical-object.slice";
+import "tippy.js/dist/tippy.css";
 
 function App() {
   const dispatch = useDispatch();

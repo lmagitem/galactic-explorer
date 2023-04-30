@@ -7,7 +7,10 @@ import { setStarSystemFromDTO } from "./star-system.slice";
 
 export async function fetchStarSystem(dispatch: any, getState: () => any) {
   const state = getState();
-  const response = await starSystemApi.loadStarSystem(state.settings.current);
+  const response = await starSystemApi.loadStarSystem(
+    state.settings.current,
+    state.settings.coordinates,
+  );
   dispatch(selectAstronomicalObject(undefined));
   dispatch(setStarSystemFromDTO(response as StarSystemDTO));
   dispatch(setNavState(NavStateEnum.Display));
