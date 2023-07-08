@@ -15,8 +15,7 @@ import { selectAstronomicalObject } from "../../store/astronomical-object.slice"
 import { Galaxy } from "../../models/galaxy";
 import { AnyAction } from "@reduxjs/toolkit";
 import { ShiningStar } from "./ShiningStar";
-
-export const SIZE = 2000;
+2;
 export const CANVAS_SIZE = 3000;
 
 interface PixiSatellite extends PIXI.Graphics {
@@ -100,6 +99,7 @@ function refreshSize(
     if (!!container) {
       container.style.width = `${width}px`;
       container.style.height = `${height}px`;
+      setTimeout(() => viewportRef?.current?.fit());
     }
   }
 }
@@ -206,7 +206,7 @@ function getMaxDistance(objectsToDraw: any[]) {
 
 /** Calculates a scaling factor allowing us to scale the system's elements so that they fit the canvas size. */
 function calculateMultiplier(maxDistance: number) {
-  const maxAvailableDistance = SIZE / 2.2;
+  const maxAvailableDistance = CANVAS_SIZE / 2.5;
   return (1 / (maxDistance <= 0 ? 1 : maxDistance)) * maxAvailableDistance;
 }
 
@@ -345,7 +345,6 @@ function drawSatellites(
 
     // Create a new satellite
     let satellite = drawObject(orbitalPoint, multiplier);
-    drawnDistance -= orbitalPoint.type === AstronomicalObject.Void ? satellite.radius : 0;
     satellite.y = i === 1 ? -drawnDistance : drawnDistance;
     satellite.id = orbitalPoint.id;
     satellite.speed = 0.001 * (orbitalPoint.depth || 1);
@@ -404,9 +403,7 @@ function drawObject(orbitalPoint: OrbitalPoint, multiplier: number) {
     satellite.on("mouseout", (event) => {
       satellite.tint = 0x00ff00;
     });
-    satellite.beginFill(0x00ff00);
     drawVoidCross(radius, satellite);
-    satellite.endFill();
   } else {
     throw new Error(
       `OrbitalPoint n°${orbitalPoint.id} has a type (${orbitalPoint.type}) for which no case implemented!`,
@@ -418,39 +415,10 @@ function drawObject(orbitalPoint: OrbitalPoint, multiplier: number) {
 
 /** Draws a cross-shaped graphics object to represent an empty gravitational point in space. */
 function drawVoidCross(radius: number, satellite: PixiSatellite) {
-  const thirdOfRadius = radius * 0.33;
-  const halfOfRadius = radius * 0.5;
-  const twoThirdsOfRadius = radius * 0.66;
-  satellite.drawPolygon(
-    new PIXI.Polygon([
-      thirdOfRadius,
-      halfOfRadius,
-      twoThirdsOfRadius,
-      halfOfRadius,
-      twoThirdsOfRadius,
-      halfOfRadius + thirdOfRadius,
-      radius,
-      halfOfRadius + thirdOfRadius,
-      radius,
-      halfOfRadius + twoThirdsOfRadius,
-      twoThirdsOfRadius,
-      halfOfRadius + twoThirdsOfRadius,
-      twoThirdsOfRadius,
-      halfOfRadius + radius,
-      thirdOfRadius,
-      halfOfRadius + radius,
-      thirdOfRadius,
-      halfOfRadius + twoThirdsOfRadius,
-      0,
-      halfOfRadius + twoThirdsOfRadius,
-      0,
-      halfOfRadius + thirdOfRadius,
-      thirdOfRadius,
-      halfOfRadius + thirdOfRadius,
-      thirdOfRadius,
-      halfOfRadius,
-    ]),
-  );
+  satellite.beginFill(0x00ff00);
+  satellite.drawRect(-radius, -radius * 0.25, radius * 2, radius * 0.5);
+  satellite.drawRect(-radius * 0.25, -radius, radius * 0.5, radius * 2);
+  satellite.endFill();
 }
 
 /** Scales the radius of the given {@link OrbitalPoint} using the given multiplier so that it fits in the canvas. */
