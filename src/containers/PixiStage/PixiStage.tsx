@@ -351,6 +351,7 @@ function drawSatellites(
     satellite.angle = randomRotation + (i * 360) / parentPoint.satelliteIds.length;
     satellite.zIndex = parent.zIndex + 1;
     parent.addChild(satellite);
+
     satellite.sortableChildren = true;
     satellites.push(satellite);
     satellite.on("click", (event) => {
@@ -365,40 +366,22 @@ function drawSatellites(
 
 /** Draws a graphical representation of an {@link OrbitalPoint} object. */
 function drawObject(orbitalPoint: OrbitalPoint, multiplier: number) {
+  let radius = calculateDisplayRadius(orbitalPoint, multiplier);
   let satellite = new PIXI.Graphics() as PixiSatellite;
+  satellite.radius = radius;
+
   satellite.interactive = true;
   satellite.buttonMode = true;
   satellite.on("mouseover", (event) => {
     satellite.tint = 0xffffff;
   });
-  let radius = calculateDisplayRadius(orbitalPoint, multiplier);
-  satellite.radius = radius;
 
   if (orbitalPoint.type === AstronomicalObject.Star) {
     const color = getStarColorAsNumber((orbitalPoint as Star).temperature);
     satellite.on("mouseout", (event) => {
       satellite.tint = color;
     });
-    let blur = new PIXI.Graphics();
-    blur.beginFill(color);
-    blur.drawEllipse(0, 0, radius, radius);
-    blur.endFill();
-    let blurFilter = new PIXI.filters.BlurFilter();
-    blurFilter.blur = radius * 0.05;
-    blur.filters = [blurFilter];
-    satellite.addChild(blur);
-    blur = new PIXI.Graphics();
-    blur.beginFill(color);
-    blur.drawEllipse(0, 0, radius, radius);
-    blur.endFill();
-    blurFilter = new PIXI.filters.BlurFilter();
-    blurFilter.blur = radius * 0.2;
-    blur.filters = [blurFilter];
-    satellite.addChild(blur);
-
-    satellite.beginFill(color);
-    satellite.drawEllipse(0, 0, radius, radius);
-    satellite.endFill();
+    drawStar(satellite, color, radius);
   } else if (orbitalPoint.type === AstronomicalObject.Void) {
     satellite.on("mouseout", (event) => {
       satellite.tint = 0x00ff00;
@@ -411,6 +394,32 @@ function drawObject(orbitalPoint: OrbitalPoint, multiplier: number) {
   }
 
   return satellite;
+}
+
+/** Draws a Star with its light halo. */
+function drawStar(satellite: PixiSatellite, color: number, radius: number) {
+  drawBlurredStar(color, radius, 0.05, satellite);
+  drawBlurredStar(color, radius, 0.2, satellite);
+  satellite.beginFill(color);
+  satellite.drawEllipse(0, 0, radius, radius);
+  satellite.endFill();
+}
+
+/** Draws the blurred version of a star to act as its halo. */
+function drawBlurredStar(
+  color: number,
+  radius: number,
+  blurFactor: number,
+  satellite: PixiSatellite,
+): void {
+  let blur = new PIXI.Graphics();
+  blur.beginFill(color);
+  blur.drawEllipse(0, 0, radius, radius);
+  blur.endFill();
+  let blurFilter = new PIXI.filters.BlurFilter();
+  blurFilter.blur = radius * blurFactor;
+  blur.filters = [blurFilter];
+  satellite.addChild(blur);
 }
 
 /** Draws a cross-shaped graphics object to represent an empty gravitational point in space. */
