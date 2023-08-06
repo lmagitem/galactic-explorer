@@ -21,8 +21,8 @@ export function FilteredSearchResult({ orbitalPoint, system, onClick }: Filtered
       <div className="padded-left">
         {orbitalPoint?.type === AstronomicalObject.Star && printStarType(orbitalPoint as Star)}
         {orbitalPoint &&
-          orbitalPoint.satelliteIds.length > 0 &&
-          printSatellites(orbitalPoint.satelliteIds, system)}
+          orbitalPoint.ownOrbit.satelliteIds.length > 0 &&
+          printSatellites(orbitalPoint.ownOrbit.satelliteIds, system)}
       </div>
     </div>
   );

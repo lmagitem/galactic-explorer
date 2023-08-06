@@ -152,6 +152,7 @@ function drawOrbits(
   dispatch: Dispatch<AnyAction>,
 ) {
   const objectsToDraw = getOrbitalPointsToDraw(system, currentObject);
+  console.log(objectsToDraw);
   const maxDistance = getMaxDistance(objectsToDraw);
   const multiplier = calculateMultiplier(maxDistance);
   const center = CANVAS_SIZE / 2;
@@ -183,14 +184,18 @@ function drawOrbits(
 
 /** Returns an array of objects to draw based on the currently selected object. */
 function getOrbitalPointsToDraw(system: StarSystem, currentObject: OrbitalPoint) {
-  const toDraw = [];
-  const idsToCheck = [...currentObject.satelliteIds];
+  const toDraw: OrbitalPoint[] = [];
+  const idsToCheck = [...currentObject.ownOrbit.satelliteIds];
   let orbitalPoint = currentObject;
 
   while (idsToCheck.length > 0) {
     const id = idsToCheck.pop();
     orbitalPoint = system.allObjects.find((op: { id: any }) => op.id === id)!;
-    idsToCheck.push(...orbitalPoint.satelliteIds);
+    for (const newId of orbitalPoint.ownOrbit.satelliteIds) {
+      if (!idsToCheck.includes(newId) && !toDraw.find((p) => p.id === newId)) {
+        idsToCheck.push(newId);
+      }
+    }
     toDraw.push(orbitalPoint);
   }
 
@@ -327,8 +332,8 @@ function drawSatellites(
 ) {
   let randomRotation = Math.random() * 360;
 
-  for (let i = 0; i < parentPoint.satelliteIds.length; i++) {
-    const id = parentPoint.satelliteIds[i];
+  for (let i = 0; i < parentPoint.ownOrbit.satelliteIds.length; i++) {
+    const id = parentPoint.ownOrbit.satelliteIds[i];
     const orbitalPoint = toDraw.find((op) => op.id === id);
 
     if (!orbitalPoint) throw new Error(`OrbitalPoint n°${id} should have been found!`);
@@ -336,7 +341,7 @@ function drawSatellites(
     // Create the path that the satellite will follow
     let path = new PIXI.Graphics() as PixiPath;
     path.lineStyle(1, pathColors[(orbitalPoint?.depth || 0) % pathColors.length]);
-    let drawnDistance = (orbitalPoint.distanceFromPrimary || 0) * multiplier;
+    let drawnDistance = (orbitalPoint.ownOrbit.averageDistance || 0) * multiplier;
     path.drawEllipse(0, 0, drawnDistance, drawnDistance);
     path.endFill();
     path.id = orbitalPoint.id;
@@ -348,7 +353,7 @@ function drawSatellites(
     satellite.y = i === 1 ? -drawnDistance : drawnDistance;
     satellite.id = orbitalPoint.id;
     satellite.speed = 0.001 * (orbitalPoint.depth || 1);
-    satellite.angle = randomRotation + (i * 360) / parentPoint.satelliteIds.length;
+    satellite.angle = randomRotation + (i * 360) / parentPoint.ownOrbit.satelliteIds.length;
     satellite.zIndex = parent.zIndex + 1;
     parent.addChild(satellite);
 
@@ -358,7 +363,7 @@ function drawSatellites(
       dispatch(selectAstronomicalObject(orbitalPoint));
     });
 
-    if (orbitalPoint.satelliteIds?.length > 0) {
+    if (orbitalPoint.ownOrbit.satelliteIds?.length > 0) {
       drawSatellites(orbitalPoint, satellite, toDraw, pathColors, satellites, multiplier, dispatch);
     }
   }

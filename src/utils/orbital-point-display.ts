@@ -11,10 +11,10 @@ export const formatOrbitalPointName = (
   if (orbitalPoint === undefined || system === undefined) return "";
 
   if (orbitalPoint.type === AstronomicalObject.Void) {
-    if (orbitalPoint.primaryBody === null) return "Center of the System";
-    else if (orbitalPoint.satelliteIds.length > 0)
+    if (orbitalPoint.ownOrbit.primaryBody === null) return "Center of the System";
+    else if (orbitalPoint.ownOrbit.satelliteIds.length > 0)
       return recursive
-        ? `Barycentre ${orbitalPoint.id} (${orbitalPoint.satelliteIds
+        ? `Barycentre ${orbitalPoint.id} (${orbitalPoint.ownOrbit.satelliteIds
             .map((id) =>
               formatOrbitalPointName(
                 system.allObjects.find((o) => o.id === id),

@@ -20,13 +20,24 @@ export function AstronomicalObjectsDetails({ object, system }: AstronomicalObjec
     <div className="grow details padded-horizontal padded-bottom">
       <h3 className="align-center">{formatOrbitalPointName(object, system)}</h3>
       <div className="padded-left info-table">
-        {object?.primaryBody !== null && (
+        {object?.ownOrbit.primaryBody !== null && (
           <Tippy content="The distance in Astronomical Units at which this object orbits its primary body.">
             <div className="info-table-couple">
               <div className="info-table-cell-title">Orbiting at</div>
               <div className="info-table-cell-hr"></div>
               <div className="info-table-cell-content">
-                {toDecimals(object?.distanceFromPrimary || 0, 5)} AU
+                {toDecimals(object?.ownOrbit.averageDistance || 0, 5)} AU
+              </div>
+            </div>
+          </Tippy>
+        )}
+        {object?.ownOrbit.primaryBody !== null && (
+          <Tippy content="The eccentricity of this orbital point's orbit around its primary body.">
+            <div className="info-table-couple">
+              <div className="info-table-cell-title">Eccentricity</div>
+              <div className="info-table-cell-hr"></div>
+              <div className="info-table-cell-content">
+                {toDecimals(object?.ownOrbit.eccentricity || 0, 5)}
               </div>
             </div>
           </Tippy>

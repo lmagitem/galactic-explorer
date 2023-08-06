@@ -40,9 +40,9 @@ export const fillResultAsStar = (star: Star, starDTO: StarDTO): void => {
 export const updateDepth = (orbitalPoint: OrbitalPoint) => {
   let depth = 0;
   let current = orbitalPoint;
-  while (current.primaryBody != null) {
+  while (current.ownOrbit.primaryBody != null) {
     depth++;
-    current = current.primaryBody;
+    current = current.ownOrbit.primaryBody;
   }
   orbitalPoint.depth = depth;
 };

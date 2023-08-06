@@ -7,9 +7,13 @@ export const convertOrbitalPointWithoutReferencesFromDTO = (dto: OrbitalPointDTO
   let result = {
     id: dto.id,
     depth: 0,
-    primaryBody: null,
-    distanceFromPrimary: dto.distance_from_primary,
-    satelliteIds: dto.satellite_ids,
+    ownOrbit: {
+      primaryBody: null,
+      averageDistance: dto.own_orbit?.average_distance || null,
+      eccentricity: dto.own_orbit?.eccentricity || 0.0,
+      satelliteIds: dto.own_orbit?.satellite_ids || [],
+    },
+    orbits: [],
   } as unknown as OrbitalPoint;
 
   let dtoType = dto.object;
@@ -20,6 +24,9 @@ export const convertOrbitalPointWithoutReferencesFromDTO = (dto: OrbitalPointDTO
   } else {
     throw new Error(`Should add a new case in my pseudo-match for ${dtoType}`);
   }
+
+console.log(result);
+
 
   return result;
 };

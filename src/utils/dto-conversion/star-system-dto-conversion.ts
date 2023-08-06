@@ -22,9 +22,10 @@ export const convertStarSystemFromDTO = (dto: StarSystemDTO): StarSystem => {
     if (!orbitalPointDTO)
       throw new Error(`Should have found a DTO with the following id: ${orbitalPoint.id}`);
 
-    orbitalPoint.primaryBody =
-      result.allObjects.find((op: OrbitalPoint) => op.id === orbitalPointDTO.primary_body_id) ||
+    orbitalPoint.ownOrbit.primaryBody =
+      result.allObjects.find((op: OrbitalPoint) => op.id === orbitalPointDTO.own_orbit?.primary_body_id) ||
       null;
+
   });
 
   // Add references in the StarSystem
