@@ -47,6 +47,10 @@ export const convertOrbitalPointWithoutReferencesFromDTO = (dto: OrbitalPointDTO
     (ao as AstronomicalObjectDTOInterface).IcyDisk !== undefined
   ) {
     const aoi = ao as AstronomicalObjectDTOInterface;
+    console.log(
+      `${aoi.GaseousDisk?.name ?? aoi.IcyDisk?.name ?? aoi.TelluricDisk?.name ?? "unknown"}`,
+      aoi,
+    );
     fillResultAsCelestialDisk(
       result as CelestialDisk,
       (aoi.GaseousDisk !== undefined

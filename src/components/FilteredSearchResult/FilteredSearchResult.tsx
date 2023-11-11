@@ -1,8 +1,12 @@
 import { AstronomicalObjectTypeEnum } from "../../models/astronomical-object";
+import { CelestialBody } from "../../models/celestial-body";
+import { CelestialDisk } from "../../models/celestial-disk";
 import { OrbitalPoint } from "../../models/orbital-point";
 import { Star } from "../../models/star";
 import { StarSystem } from "../../models/star-system";
+import { formatCelestialDisk } from "../../utils/disk-display";
 import { formatOrbitalPointName } from "../../utils/orbital-point-display";
+import { formatCelestialBody } from "../../utils/planet-display";
 import { formatSpectralType } from "../../utils/star-display";
 import "./FilteredSearchResult.css";
 
@@ -21,6 +25,14 @@ export function FilteredSearchResult({ orbitalPoint, system, onClick }: Filtered
       <div className="padded-left">
         {orbitalPoint?.type === AstronomicalObjectTypeEnum.Star &&
           printStarType(orbitalPoint as Star)}
+        {(orbitalPoint?.type === AstronomicalObjectTypeEnum.GaseousBody ||
+          orbitalPoint?.type === AstronomicalObjectTypeEnum.IcyBody ||
+          orbitalPoint?.type === AstronomicalObjectTypeEnum.TelluricBody) &&
+          formatCelestialBody(orbitalPoint as CelestialBody)}
+        {(orbitalPoint?.type === AstronomicalObjectTypeEnum.GaseousDisk ||
+          orbitalPoint?.type === AstronomicalObjectTypeEnum.IcyDisk ||
+          orbitalPoint?.type === AstronomicalObjectTypeEnum.TelluricDisk) &&
+          formatCelestialDisk(orbitalPoint as CelestialDisk)}
         {orbitalPoint &&
           orbitalPoint.orbits.length > 0 &&
           printSatellites(orbitalPoint.orbits?.flatMap((o) => o.satelliteIds), system)}

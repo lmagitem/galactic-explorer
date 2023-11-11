@@ -204,9 +204,9 @@ function getOrbitalPointsToDraw(system: StarSystem, currentObject: OrbitalPoint)
 }
 
 /** Returns the maximum distance of any object in the array. */
-function getMaxDistance(objectsToDraw: any[]) {
+function getMaxDistance(objectsToDraw: OrbitalPoint[]) {
   return objectsToDraw
-    .map((op: { distanceFromPrimary: any }) => op.distanceFromPrimary || 0)
+    .map((op: OrbitalPoint) => op.ownOrbit.averageDistance || 0)
     .reduce((a: number, b: number) => Math.max(a, b), -Infinity);
 }
 

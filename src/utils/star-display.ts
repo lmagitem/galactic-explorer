@@ -1,6 +1,32 @@
 import { StarLuminosityClass, StarLuminosityClassEnum } from "../models/star-luminosity-class";
 import { StarSpectralType, StarSpectralTypeEnum } from "../models/star-spectral-type";
+import { StellarEvolution, StellarEvolutionValue } from "../models/stellar-evolution";
 import { smoothScaleValueLog } from "./math";
+
+export const formatPopulation = (population: StellarEvolutionValue): string => {
+  let result = "";
+
+  switch (population) {
+    case StellarEvolution.Paleodwarf:
+      result = `Population III`;
+      break;
+    case StellarEvolution.Subdwarf:
+      result = `Population II`;
+      break;
+    case StellarEvolution.Dwarf:
+      result = `Early Population I`;
+      break;
+    case StellarEvolution.Superdwarf:
+      result = `Late Population I`;
+      break;
+    case StellarEvolution.Hyperdwarf:
+    default:
+      result = `Population 0`;
+      break;
+  }
+
+  return result;
+};
 
 export const formatSpectralType = (
   spectralType: StarSpectralType | undefined,
@@ -113,9 +139,4 @@ export const calculateStarRadiusForGraph = (radius: number, maxVal: number): num
   const minVal = 1.16136118908e-5;
   const newMin = 2;
   return smoothScaleValueLog(radius, minVal, maxVal, newMin, maxVal);
-};
-
-export const convertSolarRadiiToKilometers = (solarRadii: number) => {
-  const sunRadiusInKm = 696340; // Sun's average radius in kilometers
-  return solarRadii * sunRadiusInKm;
 };
