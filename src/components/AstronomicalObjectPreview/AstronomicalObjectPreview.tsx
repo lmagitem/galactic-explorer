@@ -1,4 +1,4 @@
-import { AstronomicalObject } from "../../models/astronomical-object";
+import { AstronomicalObjectTypeEnum } from "../../models/astronomical-object";
 import { OrbitalPoint } from "../../models/orbital-point";
 import { Star } from "../../models/star";
 import { getStarColor } from "../../utils/color";
@@ -10,7 +10,7 @@ export interface AstronomicalObjectPreviewProps {
 }
 
 export function AstronomicalObjectPreview({ object }: AstronomicalObjectPreviewProps) {
-  if (object?.type === AstronomicalObject.Star) {
+  if (object?.type === AstronomicalObjectTypeEnum.Star) {
     const star = object as Star;
     const color = getStarColor(star.temperature);
     const fontSize = `${calculateStarDisplaySize(star.radius)}em`;

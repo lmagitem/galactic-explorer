@@ -114,3 +114,8 @@ export const calculateStarRadiusForGraph = (radius: number, maxVal: number): num
   const newMin = 2;
   return smoothScaleValueLog(radius, minVal, maxVal, newMin, maxVal);
 };
+
+export const convertSolarRadiiToKilometers = (solarRadii: number) => {
+  const sunRadiusInKm = 696340; // Sun's average radius in kilometers
+  return solarRadii * sunRadiusInKm;
+};

@@ -1,4 +1,4 @@
-import { AstronomicalObject } from "../../models/astronomical-object";
+import { AstronomicalObjectTypeEnum } from "../../models/astronomical-object";
 import { OrbitalPoint } from "../../models/orbital-point";
 import { Star } from "../../models/star";
 import { StarSystem } from "../../models/star-system";
@@ -19,10 +19,11 @@ export function FilteredSearchResult({ orbitalPoint, system, onClick }: Filtered
         -{"-".repeat(orbitalPoint?.depth || 0)} {formatOrbitalPointName(orbitalPoint, system)}
       </h4>
       <div className="padded-left">
-        {orbitalPoint?.type === AstronomicalObject.Star && printStarType(orbitalPoint as Star)}
+        {orbitalPoint?.type === AstronomicalObjectTypeEnum.Star &&
+          printStarType(orbitalPoint as Star)}
         {orbitalPoint &&
-          orbitalPoint.ownOrbit.satelliteIds.length > 0 &&
-          printSatellites(orbitalPoint.ownOrbit.satelliteIds, system)}
+          orbitalPoint.orbits.length > 0 &&
+          printSatellites(orbitalPoint.orbits?.flatMap((o) => o.satelliteIds), system)}
       </div>
     </div>
   );
@@ -32,16 +33,14 @@ const printStarType = (star: Star): JSX.Element => (
   <p>{formatSpectralType(star.spectralType, star.luminosityClass)}</p>
 );
 
-const printSatellites = (satelliteIds: number[], system: StarSystem | undefined): JSX.Element => (
-  <p>
-    Orbited by:{" "}
-    {satelliteIds
-      .map((id) =>
-        formatOrbitalPointName(
-          system?.allObjects.find((o) => o.id === id),
-          system,
-        ),
-      )
-      .join(", ")}
-  </p>
-);
+const printSatellites = (satelliteIds: number[], system: StarSystem | undefined): JSX.Element =>
+  satelliteIds.length > 0 ? (
+    <p>
+      Orbited by:{" "}
+      {satelliteIds
+        .map((id) => formatOrbitalPointName(system?.allObjects.find((o) => o.id === id), system))
+        .join(", ")}
+    </p>
+  ) : (
+    <span></span>
+  );

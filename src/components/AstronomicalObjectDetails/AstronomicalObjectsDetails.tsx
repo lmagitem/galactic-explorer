@@ -1,12 +1,16 @@
 import Tippy from "@tippyjs/react";
 import "./AstronomicalObjectsDetails.css";
-import { AstronomicalObject } from "../../models/astronomical-object";
+import { AstronomicalObjectTypeEnum } from "../../models/astronomical-object";
 import { OrbitalPoint } from "../../models/orbital-point";
 import { Star } from "../../models/star";
 import { StarSystem } from "../../models/star-system";
 import { toDecimals } from "../../utils/math";
 import { formatOrbitalPointName } from "../../utils/orbital-point-display";
-import { formatSpectralType, formatSpectralShortHand } from "../../utils/star-display";
+import {
+  formatSpectralType,
+  formatSpectralShortHand,
+  convertSolarRadiiToKilometers,
+} from "../../utils/star-display";
 
 export interface AstronomicalObjectsDetailsProps {
   object: OrbitalPoint | undefined;
@@ -14,7 +18,7 @@ export interface AstronomicalObjectsDetailsProps {
 }
 
 export function AstronomicalObjectsDetails({ object, system }: AstronomicalObjectsDetailsProps) {
-  const star = object?.type === AstronomicalObject.Star ? (object as Star) : undefined;
+  const star = object?.type === AstronomicalObjectTypeEnum.Star ? (object as Star) : undefined;
 
   return (
     <div className="grow details padded-horizontal padded-bottom">
@@ -87,7 +91,11 @@ export function AstronomicalObjectsDetails({ object, system }: AstronomicalObjec
                 <div className="info-table-cell-content">{toDecimals(star?.luminosity, 5)} L☉</div>
               </div>
             </Tippy>
-            <Tippy content="This star's mass, in Solar Radii.">
+            <Tippy
+              content={`This star's radius, in Solar Radii. Diameter: ~${convertSolarRadiiToKilometers(
+                (star?.radius || 0) * 2,
+              ).toLocaleString("en-UK", { useGrouping: true, maximumFractionDigits: 0 })} km.`}
+            >
               <div className="info-table-couple">
                 <div className="info-table-cell-title">Radius</div>
                 <div className="info-table-cell-hr"></div>

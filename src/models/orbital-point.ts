@@ -1,6 +1,5 @@
-import { AstronomicalObjectType, VoidDTO } from "./astronomical-object";
+import { AstronomicalObjectDTO, AstronomicalObject, AstronomicalObjectType } from "./astronomical-object";
 import { Orbit, OrbitDTO } from "./orbit";
-import { StarDTO } from "./star";
 
 export interface OrbitalPoint {
   id: number;
@@ -14,5 +13,5 @@ export interface OrbitalPointDTO {
   id: number;
   own_orbit: OrbitDTO | null;
   orbits: OrbitDTO[];
-  object: VoidDTO | StarDTO;
+  object: AstronomicalObjectDTO;
 }

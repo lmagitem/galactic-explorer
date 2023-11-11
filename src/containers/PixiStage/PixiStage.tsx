@@ -8,13 +8,14 @@ import { StarSystem } from "../../models/star-system";
 import { Star } from "../../models/star";
 import { calculateStarRadiusForGraph } from "../../utils/star-display";
 import { convertSolarRadiiToAU } from "../../utils/units";
-import { AstronomicalObject } from "../../models/astronomical-object";
+import { AstronomicalObjectTypeEnum } from "../../models/astronomical-object";
 import { getStarColorAsNumber } from "../../utils/color";
 import { OrbitalPoint } from "../../models/orbital-point";
 import { selectAstronomicalObject } from "../../store/astronomical-object.slice";
 import { Galaxy } from "../../models/galaxy";
 import { AnyAction } from "@reduxjs/toolkit";
 import { ShiningStar } from "./ShiningStar";
+import { Orbit } from "../../models/orbit";
 2;
 export const CANVAS_SIZE = 3000;
 
@@ -23,6 +24,7 @@ interface PixiSatellite extends PIXI.Graphics {
   speed: number;
   rotation: number;
   radius: number;
+  ownOrbit: Orbit | null;
 }
 
 interface PixiPath extends PIXI.Graphics {
@@ -152,7 +154,6 @@ function drawOrbits(
   dispatch: Dispatch<AnyAction>,
 ) {
   const objectsToDraw = getOrbitalPointsToDraw(system, currentObject);
-  console.log(objectsToDraw);
   const maxDistance = getMaxDistance(objectsToDraw);
   const multiplier = calculateMultiplier(maxDistance);
   const center = CANVAS_SIZE / 2;
@@ -185,13 +186,13 @@ function drawOrbits(
 /** Returns an array of objects to draw based on the currently selected object. */
 function getOrbitalPointsToDraw(system: StarSystem, currentObject: OrbitalPoint) {
   const toDraw: OrbitalPoint[] = [];
-  const idsToCheck = [...currentObject.ownOrbit.satelliteIds];
+  const idsToCheck = currentObject.orbits.flatMap((o) => o.satelliteIds);
   let orbitalPoint = currentObject;
 
   while (idsToCheck.length > 0) {
     const id = idsToCheck.pop();
     orbitalPoint = system.allObjects.find((op: { id: any }) => op.id === id)!;
-    for (const newId of orbitalPoint.ownOrbit.satelliteIds) {
+    for (const newId of orbitalPoint.orbits.flatMap((o) => o.satelliteIds)) {
       if (!idsToCheck.includes(newId) && !toDraw.find((p) => p.id === newId)) {
         idsToCheck.push(newId);
       }
@@ -332,8 +333,9 @@ function drawSatellites(
 ) {
   let randomRotation = Math.random() * 360;
 
-  for (let i = 0; i < parentPoint.ownOrbit.satelliteIds.length; i++) {
-    const id = parentPoint.ownOrbit.satelliteIds[i];
+  const orbits = parentPoint.orbits.flatMap((orbit) => orbit.satelliteIds);
+  for (let i = 0; i < orbits.length; i++) {
+    const id = orbits[i];
     const orbitalPoint = toDraw.find((op) => op.id === id);
 
     if (!orbitalPoint) throw new Error(`OrbitalPoint n°${id} should have been found!`);
@@ -350,20 +352,28 @@ function drawSatellites(
 
     // Create a new satellite
     let satellite = drawObject(orbitalPoint, multiplier);
-    satellite.y = i === 1 ? -drawnDistance : drawnDistance;
+    satellite.y =
+      orbitalPoint.type === AstronomicalObjectTypeEnum.GaseousDisk ||
+      orbitalPoint.type === AstronomicalObjectTypeEnum.IcyDisk ||
+      orbitalPoint.type === AstronomicalObjectTypeEnum.TelluricDisk
+        ? 0
+        : i === 1
+        ? -drawnDistance
+        : drawnDistance;
     satellite.id = orbitalPoint.id;
     satellite.speed = 0.001 * (orbitalPoint.depth || 1);
-    satellite.angle = randomRotation + (i * 360) / parentPoint.ownOrbit.satelliteIds.length;
+    satellite.angle = randomRotation + (i * 360) / parentPoint.orbits.length;
     satellite.zIndex = parent.zIndex + 1;
     parent.addChild(satellite);
 
     satellite.sortableChildren = true;
     satellites.push(satellite);
     satellite.on("click", (event) => {
+      console.log(`Should select ${(orbitalPoint as any).name} (${orbitalPoint.type})`);
       dispatch(selectAstronomicalObject(orbitalPoint));
     });
 
-    if (orbitalPoint.ownOrbit.satelliteIds?.length > 0) {
+    if (orbitalPoint.orbits.length > 0) {
       drawSatellites(orbitalPoint, satellite, toDraw, pathColors, satellites, multiplier, dispatch);
     }
   }
@@ -381,17 +391,47 @@ function drawObject(orbitalPoint: OrbitalPoint, multiplier: number) {
     satellite.tint = 0xffffff;
   });
 
-  if (orbitalPoint.type === AstronomicalObject.Star) {
+  if (orbitalPoint.type === AstronomicalObjectTypeEnum.Star) {
     const color = getStarColorAsNumber((orbitalPoint as Star).temperature);
     satellite.on("mouseout", (event) => {
       satellite.tint = color;
     });
     drawStar(satellite, color, radius);
-  } else if (orbitalPoint.type === AstronomicalObject.Void) {
+  } else if (orbitalPoint.type === AstronomicalObjectTypeEnum.Void) {
     satellite.on("mouseout", (event) => {
       satellite.tint = 0x00ff00;
     });
     drawVoidCross(radius, satellite);
+  } else if (orbitalPoint.type === AstronomicalObjectTypeEnum.GaseousBody) {
+    satellite.on("mouseout", (event) => {
+      satellite.tint = 0xcccc5e;
+    });
+    drawBody(satellite, 0xcccc5e, radius);
+  } else if (orbitalPoint.type === AstronomicalObjectTypeEnum.IcyBody) {
+    satellite.on("mouseout", (event) => {
+      satellite.tint = 0x3dd5ff;
+    });
+    drawBody(satellite, 0x3dd5ff, radius);
+  } else if (orbitalPoint.type === AstronomicalObjectTypeEnum.TelluricBody) {
+    satellite.on("mouseout", (event) => {
+      satellite.tint = 0x916c33;
+    });
+    drawBody(satellite, 0x916c33, radius);
+  } else if (orbitalPoint.type === AstronomicalObjectTypeEnum.GaseousDisk) {
+    satellite.on("mouseout", (event) => {
+      satellite.tint = 0xcccc5e;
+    });
+    drawDisk(satellite, 0xcccc5e, radius);
+  } else if (orbitalPoint.type === AstronomicalObjectTypeEnum.IcyDisk) {
+    satellite.on("mouseout", (event) => {
+      satellite.tint = 0x3dd5ff;
+    });
+    drawDisk(satellite, 0x3dd5ff, radius);
+  } else if (orbitalPoint.type === AstronomicalObjectTypeEnum.TelluricDisk) {
+    satellite.on("mouseout", (event) => {
+      satellite.tint = 0x916c33;
+    });
+    drawDisk(satellite, 0x916c33, radius);
   } else {
     throw new Error(
       `OrbitalPoint n°${orbitalPoint.id} has a type (${orbitalPoint.type}) for which no case implemented!`,
@@ -406,6 +446,20 @@ function drawStar(satellite: PixiSatellite, color: number, radius: number) {
   drawBlurredStar(color, radius, 0.05, satellite);
   drawBlurredStar(color, radius, 0.2, satellite);
   satellite.beginFill(color);
+  satellite.drawEllipse(0, 0, radius, radius);
+  satellite.endFill();
+}
+
+/** Draws a Body. */
+function drawBody(satellite: PixiSatellite, color: number, radius: number) {
+  satellite.beginFill(color);
+  satellite.drawEllipse(0, 0, radius, radius);
+  satellite.endFill();
+}
+
+/** Draws a Disk. */
+function drawDisk(satellite: PixiSatellite, color: number, radius: number) {
+  satellite.lineStyle(5, color);
   satellite.drawEllipse(0, 0, radius, radius);
   satellite.endFill();
 }
@@ -438,9 +492,18 @@ function drawVoidCross(radius: number, satellite: PixiSatellite) {
 /** Scales the radius of the given {@link OrbitalPoint} using the given multiplier so that it fits in the canvas. */
 function calculateDisplayRadius(center: OrbitalPoint, multiplier: number) {
   let radius = (center as Star).radius || 0;
-  if (center.type === AstronomicalObject.Void) {
+  if (center.type === AstronomicalObjectTypeEnum.Void) {
     radius = 5;
+  } else if (
+    center.type === AstronomicalObjectTypeEnum.GaseousDisk ||
+    center.type === AstronomicalObjectTypeEnum.IcyDisk ||
+    center.type === AstronomicalObjectTypeEnum.TelluricDisk
+  ) {
+    radius = (center.ownOrbit?.averageDistance || 0) * multiplier;
   } else {
+    if (center.type !== AstronomicalObjectTypeEnum.Star) {
+      radius = convertEarthRadiiToSunRadii(radius);
+    }
     radius = convertSolarRadiiToAU(radius);
     radius = radius * multiplier;
     radius = normalize(radius);
@@ -451,4 +514,13 @@ function calculateDisplayRadius(center: OrbitalPoint, multiplier: number) {
 /** Normalizes the radius of an {@link OrbitalPoint} object, so that it is never too small. */
 function normalize(radius: number): number {
   return radius < 25 ? calculateStarRadiusForGraph(radius, 25) : radius;
+}
+
+/** For non-stars celestial bodies, convert their radius from Earth radii to Sun radii for display. */
+function convertEarthRadiiToSunRadii(earthRadii: number): number {
+  const earthRadiusInKm = 6371; // Earth's average radius in kilometers
+  const sunRadiusInKm = 696340; // Sun's average radius in kilometers
+  const sunRadiusPerEarthRadius = sunRadiusInKm / earthRadiusInKm;
+
+  return earthRadii / sunRadiusPerEarthRadius;
 }

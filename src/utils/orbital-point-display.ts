@@ -1,4 +1,6 @@
-import { AstronomicalObject } from "../models/astronomical-object";
+import { AstronomicalObjectTypeEnum } from "../models/astronomical-object";
+import { CelestialBody } from "../models/celestial-body";
+import { CelestialDisk } from "../models/celestial-disk";
 import { OrbitalPoint } from "../models/orbital-point";
 import { Star } from "../models/star";
 import { StarSystem } from "../models/star-system";
@@ -10,11 +12,12 @@ export const formatOrbitalPointName = (
 ): string => {
   if (orbitalPoint === undefined || system === undefined) return "";
 
-  if (orbitalPoint.type === AstronomicalObject.Void) {
+  if (orbitalPoint.type === AstronomicalObjectTypeEnum.Void) {
     if (orbitalPoint.ownOrbit.primaryBody === null) return "Center of the System";
-    else if (orbitalPoint.ownOrbit.satelliteIds.length > 0)
+    else if (orbitalPoint.orbits.length > 0)
       return recursive
-        ? `Barycentre ${orbitalPoint.id} (${orbitalPoint.ownOrbit.satelliteIds
+        ? `Barycentre ${orbitalPoint.id} (${orbitalPoint.orbits
+            .flatMap((o) => o.satelliteIds)
             .map((id) =>
               formatOrbitalPointName(
                 system.allObjects.find((o) => o.id === id),
@@ -25,8 +28,20 @@ export const formatOrbitalPointName = (
             .join(", ")})`
         : `Barycentre ${orbitalPoint.id}`;
     else return "Empty Space";
-  } else if (orbitalPoint.type === AstronomicalObject.Star) {
+  } else if (orbitalPoint.type === AstronomicalObjectTypeEnum.Star) {
     return (orbitalPoint as Star).name;
+  } else if (
+    orbitalPoint.type === AstronomicalObjectTypeEnum.GaseousBody ||
+    orbitalPoint.type === AstronomicalObjectTypeEnum.TelluricBody ||
+    orbitalPoint.type === AstronomicalObjectTypeEnum.IcyBody
+  ) {
+    return (orbitalPoint as CelestialBody).name;
+  } else if (
+    orbitalPoint.type === AstronomicalObjectTypeEnum.GaseousDisk ||
+    orbitalPoint.type === AstronomicalObjectTypeEnum.TelluricDisk ||
+    orbitalPoint.type === AstronomicalObjectTypeEnum.IcyDisk
+  ) {
+    return (orbitalPoint as CelestialDisk).name;
   } else {
     throw new Error(`Should add a new case in my pseudo-match for ${orbitalPoint}`);
   }

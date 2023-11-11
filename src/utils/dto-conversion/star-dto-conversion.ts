@@ -1,4 +1,4 @@
-import { AstronomicalObject } from "../../models/astronomical-object";
+import { AstronomicalObjectTypeEnum } from "../../models/astronomical-object";
 import { OrbitalPoint } from "../../models/orbital-point";
 import { Star, StarDTO } from "../../models/star";
 import {
@@ -7,18 +7,22 @@ import {
   isStarSpectralTypeDTO,
   StarSpectralTypeEnum,
 } from "../../models/star-spectral-type";
+import { StellarEvolution } from "../../models/stellar-evolution";
 
 export const fillResultAsStar = (star: Star, starDTO: StarDTO): void => {
-  star.type = AstronomicalObject.Star;
-  star.name = starDTO.Star.name;
-  star.mass = starDTO.Star.mass;
-  star.luminosity = starDTO.Star.luminosity;
-  star.radius = starDTO.Star.radius;
-  star.age = starDTO.Star.age;
-  star.temperature = starDTO.Star.temperature;
-  star.luminosityClass = starDTO.Star.luminosity_class;
+  star.name = starDTO.name;
+  star.mass = starDTO.mass;
+  star.luminosity = starDTO.luminosity;
+  star.radius = starDTO.radius;
+  star.age = starDTO.age;
+  star.population = starDTO.population as StellarEvolution;
+  star.temperature = starDTO.temperature;
+  star.luminosityClass = starDTO.luminosity_class;
+  star.type = AstronomicalObjectTypeEnum.Star;
+  star.zones = starDTO.zones.map((z) => ({ start: z.start, end: z.end, zoneType: z.zone_type }));
+  star.specialTraits = starDTO.special_traits;
 
-  const spectralTypeDTO = starDTO.Star.spectral_type;
+  const spectralTypeDTO = starDTO.spectral_type;
   if (isStarSpectralType(spectralTypeDTO)) {
     star.spectralType = spectralTypeDTO as StarSpectralType;
     star.spectralTypeSubClass = null;

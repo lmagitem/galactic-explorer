@@ -2,7 +2,25 @@ import { GalacticNeighborhoodDensity } from "./galactic-neighborhood-density";
 import { GalaxyCategory } from "./galaxy-category";
 import { GalaxySpecialTrait } from "./galaxy-special-trait";
 import { GalaxySubCategory } from "./galaxy-sub-category";
+import { GasGiantSpecialTrait } from "./gas-giant-special-trait";
 import { StelliferousEra } from "./stelliferous-era";
+
+export interface GenerationSettings {
+  /** The seed to use to generate everything. */
+  seed: string;
+  /** A list of settings used to configure the [Universe] generation. */
+  universe: UniverseSettings;
+  /** A list of settings used to configure the [Galaxy] generation. */
+  galaxy: GalaxySettings;
+  /** A list of settings used to configure the [GalacticMapDivisionLevel], [GalacticMapDivision]s and [GalacticHex]es generation. */
+  sector: SectorSettings;
+  /** A list of settings used to configure the [StarSystem] generation. */
+  system: SystemSettings;
+  /** A list of settings used to configure the [Star] generation. */
+  star: StarSettings;
+  /** A list of settings used to configure the [CelestialBody] generation. */
+  celestial_body: CelestialBodySettings;
+}
 
 export interface UniverseSettings {
   /** The specific universe [StelliferousEra] to use if any. Will be overwritten if the age or **use_ours** is set. */
@@ -110,19 +128,34 @@ export interface StarSettings {
   use_ours: boolean;
 }
 
-export interface GenerationSettings {
-  /** The seed to use to generate everything. */
-  seed: string;
-  /** A list of settings used to configure the [Universe] generation. */
-  universe: UniverseSettings;
-  /** A list of settings used to configure the [Galaxy] generation. */
-  galaxy: GalaxySettings;
-  /** A list of settings used to configure the [GalacticMapDivisionLevel], [GalacticMapDivision]s and [GalacticHex]es generation. */
-  sector: SectorSettings;
-  /** A list of settings used to configure the [StarSystem] generation. */
-  system: SystemSettings;
-  /** A list of settings used to configure the [Star] generation. */
-  star: StarSettings;
+export interface CelestialBodySettings {
+  /** A list of settings used to configure the [GaseousBodySettings] generation. */
+  gaseous_body_settings: GaseousBodySettings;
+  /** A list of settings used to configure the [IcyBodySettings] generation. */
+  icy_body_settings: IcyBodySettings;
+  /** A list of settings used to configure the [TelluricBodySettings] generation. */
+  telluric_body_settings: TelluricBodySettings;
+  /** During the filling of an orbit in the system's contents generation, do not add gaseous bodies. */
+  do_not_generate_gaseous: boolean;
+  /** During the filling of an orbit in the system's contents generation, do not add icy bodies. */
+  do_not_generate_icy: boolean;
+  /** During the filling of an orbit in the system's contents generation, do not add rocky bodies. */
+  do_not_generate_rocky: boolean;
+  /** During the filling of an orbit in the system's contents generation, do not add metallic bodies. */
+  do_not_generate_metallic: boolean;
+}
+
+export interface GaseousBodySettings {
+  /** A list of specific [GasGiantSpecialTrait]s to use, if any. */
+  fixed_special_traits: null | Array<GasGiantSpecialTrait>;
+  /** A list of [GasGiantSpecialTrait]s forbidden to use in planet generation. */
+  forbidden_special_traits: null | Array<GasGiantSpecialTrait>;
+}
+
+export interface IcyBodySettings {
+}
+
+export interface TelluricBodySettings {
 }
 
 export const defaultSettings: GenerationSettings = {
@@ -168,4 +201,16 @@ export const defaultSettings: GenerationSettings = {
     fixed_mass: null,
     use_ours: false,
   },
+  celestial_body: {
+    gaseous_body_settings: {
+      fixed_special_traits: [],
+      forbidden_special_traits: []
+    },
+    icy_body_settings: {},
+    telluric_body_settings: {},
+    do_not_generate_gaseous: false,
+    do_not_generate_icy: false,
+    do_not_generate_metallic: false,
+    do_not_generate_rocky: false
+  }
 };
